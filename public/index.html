@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nyay Saathi – free legal help guide</title>
+  <meta name="description" content="Free, open-source legal help guide for India: next steps, free legal aid eligibility and draft letters, in English and Hindi.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap row">
+      <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"> Nyay Saathi</a>
+      <nav class="row gap">
+        <button id="lang-toggle" class="link" type="button" aria-label="Switch language">हिंदी</button>
+        <a href="/impact" data-i18n="nav_impact">Impact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1 data-i18n="hero_title">Stuck with a legal problem? Find your next step, free.</h1>
+      <p data-i18n="hero_sub">Tell us what happened in your own words. You get clear steps, the right helpline, whether you can get a free lawyer, and a letter you can fill in.</p>
+      <p class="sos"><span data-i18n="sos">In danger right now?</span> <a class="tel" data-helpline="112" href="tel:112">📞 112</a> · <span data-i18n="free_lawyer">Free lawyer:</span> <a class="tel" data-helpline="15100" href="tel:15100">📞 15100</a></p>
+    </section>
+
+    <section id="chat" class="card" aria-live="polite">
+      <div id="log" class="log"></div>
+      <div id="choices" class="chips"></div>
+      <form id="ask" class="ask">
+        <label for="msg" class="sr" data-i18n="ask_label">Describe your problem</label>
+        <textarea id="msg" rows="3" maxlength="2000" required data-i18n-ph="ask_ph" placeholder="Example: My contractor has not paid me for 2 months of work"></textarea>
+        <button id="send" type="submit" data-i18n="send">Get help</button>
+      </form>
+      <p class="fine" data-i18n="privacy_note">We do not save what you type. No sign-up. We only count anonymous usage to show impact.</p>
+    </section>
+
+    <section id="result" class="hidden">
+      <div class="card" id="guidance"></div>
+      <div class="card" id="aid">
+        <h2 data-i18n="aid_title">Can I get a free lawyer?</h2>
+        <p class="muted" data-i18n="aid_sub">Under section 12 of the Legal Services Authorities Act, 1987, many people get free legal aid. Tick what applies.</p>
+        <form id="aid-form">
+          <div id="aid-cats" class="checks"></div>
+          <label><span data-i18n="income">Yearly family income (₹), if none of the above</span>
+            <input id="aid-income" type="number" min="0" inputmode="numeric"></label>
+          <label><span data-i18n="state">State</span> <input id="aid-state" type="text" maxlength="40"></label>
+          <button type="submit" data-i18n="check">Check</button>
+        </form>
+        <div id="aid-result"></div>
+      </div>
+      <div class="card" id="drafts"></div>
+      <div class="card" id="feedback">
+        <p data-i18n="fb_q">Was this helpful?</p>
+        <div class="row gap">
+          <button type="button" data-fb="helpful" data-i18n="yes">Yes</button>
+          <button type="button" data-fb="not_helpful" class="secondary" data-i18n="no">No</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="followup" class="card hidden">
+      <p data-i18n="fu_q">Welcome back. Last time you looked for help. Did you take the next step?</p>
+      <div class="row gap">
+        <button type="button" data-fu="took_step" data-i18n="fu_yes">Yes, I did</button>
+        <button type="button" data-fu="resolved" data-i18n="fu_resolved">My problem is solved</button>
+        <button type="button" data-fu="not_yet" class="secondary" data-i18n="fu_no">Not yet</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap fine">
+    <p data-i18n="disclaimer">This is general legal information, not legal advice. For your case, talk to a lawyer. Free lawyers are available through legal aid (call 15100).</p>
+    <p><span data-i18n="oss">Open source (MIT).</span> <a href="/impact" data-i18n="nav_impact">Impact</a></p>
+  </footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

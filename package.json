@@ -1,0 +1,12 @@
+{
+  "name": "nyay-saathi",
+  "version": "0.1.0",
+  "description": "Free, open-source legal-help agent for Indian citizens: next steps, free legal aid eligibility and draft letters.",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=22.5" },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test --disable-warning=ExperimentalWarning tests/*.test.js"
+  }
+}
