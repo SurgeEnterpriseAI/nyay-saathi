@@ -126,3 +126,17 @@ test('HTTP API end to end', async () => {
     assert.equal(big.status, 413);
   } finally { server.close(); }
 });
+
+test('stripThinking keeps only the answer after a leaked </think>', async () => {
+  const { stripThinking } = await import('../src/agent.js');
+  assert.equal(stripThinking('We need answer... Good.\n</think>\n\nA consumer court is a forum.'), 'A consumer court is a forum.');
+  assert.equal(stripThinking('<think>half a thought'), '');
+  assert.equal(stripThinking('Plain answer.'), 'Plain answer.');
+});
+
+test('extraBody parses LLM_EXTRA_BODY and ignores bad JSON', async () => {
+  const { extraBody } = await import('../src/agent.js');
+  assert.deepEqual(extraBody({ LLM_EXTRA_BODY: '{"chat_template_kwargs":{"enable_thinking":false}}' }), { chat_template_kwargs: { enable_thinking: false } });
+  assert.deepEqual(extraBody({ LLM_EXTRA_BODY: '{bad' }), {});
+  assert.deepEqual(extraBody({}), {});
+});

@@ -20,6 +20,24 @@ export function llmConfigured(env = process.env) {
   return Boolean(env.LLM_BASE_URL && env.LLM_MODEL);
 }
 
+// Optional extra request fields as JSON, e.g. LLM_EXTRA_BODY={"chat_template_kwargs":{"enable_thinking":false}}
+// for Qwen-style models served by vLLM. Invalid JSON is ignored.
+export function extraBody(env = process.env) {
+  if (!env.LLM_EXTRA_BODY) return {};
+  try {
+    const v = JSON.parse(env.LLM_EXTRA_BODY);
+    return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
+  } catch {
+    return {};
+  }
+}
+
+// Reasoning models sometimes leak their thinking before a closing </think> tag: keep only the answer.
+export function stripThinking(text) {
+  const i = text.lastIndexOf('</think>');
+  return (i >= 0 ? text.slice(i + '</think>'.length) : text.replace(/<think>[\s\S]*$/, '')).trim();
+}
+
 async function callLLM(messages, env, fetchImpl) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), Number(env.LLM_TIMEOUT_MS || 30000));
@@ -30,13 +48,14 @@ async function callLLM(messages, env, fetchImpl) {
         'content-type': 'application/json',
         ...(env.LLM_API_KEY ? { authorization: `Bearer ${env.LLM_API_KEY}` } : {}),
       },
-      body: JSON.stringify({ model: env.LLM_MODEL, messages, tools: TOOL_SCHEMAS, tool_choice: 'auto', temperature: 0.2, max_tokens: 700 }),
+      body: JSON.stringify({ model: env.LLM_MODEL, messages, tools: TOOL_SCHEMAS, tool_choice: 'auto', temperature: 0.2, max_tokens: 700, ...extraBody(env) }),
       signal: ctrl.signal,
     });
     if (!res.ok) throw new Error(`LLM HTTP ${res.status}`);
     const json = await res.json();
     const msg = json?.choices?.[0]?.message;
     if (!msg) throw new Error('LLM returned no message');
+    if (typeof msg.content === 'string') msg.content = stripThinking(msg.content);
     return msg;
   } finally {
     clearTimeout(timer);
