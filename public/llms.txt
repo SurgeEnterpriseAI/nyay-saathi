@@ -1,0 +1,27 @@
+# Nyay Saathi
+
+> Nyay Saathi ("justice companion") is a free, open-source legal-help guide for people in India. You describe your problem in English or Hindi; it gives verified next steps, helplines and official links, checks whether you can get a free lawyer under section 12 of the Legal Services Authorities Act, 1987, and drafts the letter you need. No sign-up, no tracking cookies, and nothing you type is saved. Built by Surge Software for Code for a Billion 2026 (MIT licence).
+
+## Problems it covers
+- Unpaid wages
+- Consumer fraud and defective goods or services
+- Violence at home
+- Police not filing an FIR
+- Cheque bounce
+- A stuck government application (RTI)
+- Court case status
+- Land or tenancy disputes
+
+## What it gives you
+- Next steps from a curated, sourced knowledge base. It never makes up a law, deadline or phone number.
+- Free legal aid eligibility (women, children, SC/ST, people with disabilities, industrial workers and low-income people qualify by law), with NALSA helpline 15100 and the District Legal Services Authority.
+- Draft letters: legal aid application, RTI application, consumer complaint, wage demand, complaint to the Superintendent of Police.
+- The cheapest path first: a written demand, consumer helpline grievance, RTI, legal-aid mediation or Lok Adalat.
+
+## Links
+- Use it free: https://nyaysaathi.surgesoftware.co.in/
+- Live usage numbers: https://nyaysaathi.surgesoftware.co.in/impact
+- Source code: https://github.com/SurgeEnterpriseAI/nyay-saathi
+- Maker: Surge Software, https://surgesoftware.co.in
+
+Nyay Saathi gives legal information, not legal advice. For your case, talk to a lawyer; legal aid lawyers are free if you qualify.
