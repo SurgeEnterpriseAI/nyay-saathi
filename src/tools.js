@@ -3,18 +3,22 @@
 // and drafts are fill-in templates the citizen reviews before using.
 import { PROBLEMS, HELPLINES, DISCLAIMER } from './knowledge.js';
 
-const LANGS = new Set(['en', 'hi']);
+const LANGS = new Set(['en', 'hi', 'te']);
 const lang = (l) => (LANGS.has(l) ? l : 'en');
 
 export function getGuidance({ problem_type, language }) {
   const p = PROBLEMS[problem_type];
   if (!p) return { error: `unknown problem_type. Use one of: ${Object.keys(PROBLEMS).join(', ')}` };
   const l = lang(language);
+  // steps may be language-keyed (p.steps.en / p.steps.te) or a plain array for legacy entries.
+  let steps = [];
+  if (Array.isArray(p.steps)) steps = p.steps;
+  else if (p.steps && (p.steps[l] || p.steps.en)) steps = p.steps[l] || p.steps.en;
   return {
     problem_type,
     title: p.title[l] || p.title.en,
     urgent: Boolean(p.urgent),
-    steps: p.steps,
+    steps,
     helplines: p.helplines.map((h) => HELPLINES[h]),
     drafts_available: p.drafts,
     sources: p.sources,
@@ -208,7 +212,7 @@ export const TOOL_SCHEMAS = [
         type: 'object',
         properties: {
           problem_type: { type: 'string', enum: Object.keys(PROBLEMS) },
-          language: { type: 'string', enum: ['en', 'hi'] },
+          language: { type: 'string', enum: ['en', 'hi', 'te'] },
         },
         required: ['problem_type'],
       },

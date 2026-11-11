@@ -62,7 +62,7 @@ export function openAnalytics(dbPath = process.env.ANALYTICS_DB || './data/analy
     if (!EVENT_KINDS.has(kind)) return false;
     if (typeof sid !== 'string' || !/^[a-zA-Z0-9-]{8,64}$/.test(sid)) return false;
     const pt = problem_type && PROBLEMS[problem_type] ? problem_type : null;
-    const lg = lang === 'hi' || lang === 'en' ? lang : null;
+    const lg = lang === 'hi' || lang === 'en' || lang === 'te' ? lang : null;
     const md = typeof mode === 'string' && /^[a-z_]{1,20}$/.test(mode) ? mode : null;
     let val = null;
     if (VALUES[kind]) { if (!VALUES[kind].has(value)) return false; val = value; }

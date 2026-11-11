@@ -13,7 +13,7 @@ Rules:
 - If the person may be in danger, tell them to call 112 first.
 - Women, children, SC/ST, persons with disability and workers usually get a free lawyer: call check_legal_aid when relevant.
 - Offer a draft with draft_document when one is available. Pass only facts the person gave.
-- Reply in the person's language (Hindi if they write in Hindi or Hinglish). Use short, plain sentences. At most 6 sentences; the app shows steps and drafts separately, so do not repeat them in full.
+- Reply in the person's language (Hindi if they write in Hindi or Hinglish, Telugu if they write in Telugu). Use short, plain sentences. At most 6 sentences; the app shows steps and drafts separately, so do not repeat them in full.
 - You give legal information, not legal advice. Do not guess outcomes of cases.`;
 
 export function llmConfigured(env = process.env) {
@@ -63,7 +63,10 @@ async function callLLM(messages, env, fetchImpl) {
 }
 
 function detectLanguage(text) {
-  return /[ऀ-ॿ]/.test(text) ? 'hi' : 'en';
+  // Detect Devanagari (Hindi) or Telugu script ranges. Telugu: U+0C00–U+0C7F
+  if (/[\u0C00-\u0C7F]/.test(text)) return 'te';
+  if (/[ऀ-ॿ]/.test(text)) return 'hi';
+  return 'en';
 }
 
 function sanitizeHistory(history) {
@@ -89,24 +92,30 @@ export function offlineTurn(message, language, preferredType) {
   const out = { mode: 'offline', tool_calls: [], drafts: [], guidance: null, eligibility: null, problem_type: null };
   const type = (preferredType && PROBLEMS[preferredType] ? preferredType : null) || classifyOffline(message);
   if (!type) {
-    out.reply = language === 'hi'
-      ? 'मैं आपकी मदद करना चाहता हूँ। नीचे से अपनी समस्या चुनें, या एक-दो वाक्य में बताएँ कि क्या हुआ।'
-      : 'I want to help. Pick the problem closest to yours below, or tell me in one or two sentences what happened.';
+    out.reply = language === 'hi' ?
+      'मैं आपकी मदद करना चाहता हूँ। नीचे से अपनी समस्या चुनें, या एक-दो वाक्य में बताएँ कि क्या हुआ।' :
+      language === 'te' ?
+        'నేను మీకు సహాయం చేయాలనుకుంటున్నాను. క్రింద మీ సమస్యకు దగ్గరైనది ఎంచుకోండి, లేదా ఒకటి-రెండు వాక్యాలలో ఏమి జరిగినదో చెప్పండి.' :
+        'I want to help. Pick the problem closest to yours below, or tell me in one or two sentences what happened.';
     out.choices = Object.entries(PROBLEMS).map(([id, p]) => ({ id, title: p.title[language] || p.title.en }));
     return out;
   }
   const g = runTool('get_guidance', { problem_type: type, language }, out);
   for (const kind of g.drafts_available.slice(0, 1)) runTool('draft_document', { kind, fields: {} }, out);
-  const urgent = g.urgent ? (language === 'hi' ? 'अगर आप अभी ख़तरे में हैं, तुरंत 112 पर कॉल करें। ' : 'If you are in danger right now, call 112. ') : '';
+  const urgent = g.urgent ? (language === 'hi' ? 'अगर आप अभी ख़तरे में हैं, तुरंत 112 पर कॉल करें। ' : language === 'te' ? 'మీకు ఇప్పుడే ప్రమాదం ఉంటే, వెంటనే 112కి కాల్ చేయండి. ' : 'If you are in danger right now, call 112. ') : '';
   out.reply = language === 'hi'
     ? `${urgent}यह "${g.title}" जैसा मामला लगता है। नीचे आगे के कदम, हेल्पलाइन और एक ड्राफ़्ट पत्र है। ${DISCLAIMER.hi}`
-    : `${urgent}This sounds like: ${g.title}. Below are your next steps, helplines and a draft letter you can fill in. ${DISCLAIMER.en}`;
+    : language === 'te' ?
+      `${urgent}ఇది "${g.title}" సమస్యలా ఉంది. కింద తదుపరి అడుగులు, హెల్ప్‌లైన్‌లు, మీరు నింపుకోగల ఒక డ్రాఫ్ట్ లేఖ ఉన్నాయి. ${DISCLAIMER.te || DISCLAIMER.en}` :
+      `${urgent}This sounds like: ${g.title}. Below are your next steps, helplines and a draft letter you can fill in. ${DISCLAIMER.en}`;
   return out;
 }
 
 export async function agentTurn({ message, history = [], language, problem_type }, { env = process.env, fetchImpl = fetch } = {}) {
   const text = String(message || '').slice(0, 2000);
-  const lang = language === 'hi' || language === 'en' ? language : detectLanguage(text);
+  // The script the person actually typed in wins; otherwise use the app's language setting.
+  const detected = detectLanguage(text);
+  const lang = detected !== 'en' ? detected : (['en', 'hi', 'te'].includes(language) ? language : 'en');
   if (!llmConfigured(env)) return offlineTurn(text, lang, problem_type);
 
   const out = { mode: 'llm', tool_calls: [], drafts: [], guidance: null, eligibility: null, problem_type: null };

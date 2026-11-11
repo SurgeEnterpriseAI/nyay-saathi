@@ -52,6 +52,32 @@ test('agent works offline with no LLM configured', async () => {
   assert.ok(r2.choices.length >= 5);
 });
 
+test('Telugu: detected from script, offline reply and steps in Telugu, same helplines', async () => {
+  const r = await agentTurn({ message: 'నా భర్త నన్ను కొడతాడు' }, { env: {} });
+  assert.equal(r.problem_type, 'domestic_violence');
+  assert.match(r.reply, /[ఀ-౿]/);
+  assert.match(r.reply, /112/);
+  assert.match(r.guidance.steps[0], /[ఀ-౿]/);
+  const en = getGuidance({ problem_type: 'domestic_violence', language: 'en' });
+  assert.deepEqual(r.guidance.helplines, en.helplines);
+  assert.deepEqual(r.guidance.sources, en.sources);
+  const w = await agentTurn({ message: 'నాకు రెండు నెలల జీతం ఇవ్వలేదు' }, { env: {} });
+  assert.equal(w.problem_type, 'unpaid_wages');
+  const pick = await agentTurn({ message: 'సహాయం', language: 'te' }, { env: {} });
+  assert.ok(pick.choices.every((c) => /[ఀ-౿]/.test(c.title)));
+});
+
+test('every problem has Telugu steps matching the English ones, with no stray scripts', () => {
+  for (const [id, p] of Object.entries(PROBLEMS)) {
+    assert.ok(p.title.te, `${id} te title`);
+    assert.equal(p.steps.te.length, p.steps.en.length, `${id} te step count`);
+    for (const s of p.steps.te) assert.doesNotMatch(s, /[ऀ-ॿঀ-৿԰-֏]/, `${id}: ${s}`);
+    for (const [i, s] of p.steps.en.entries()) {
+      for (const n of s.match(/\b(112|181|1098|1915|1930|15100)\b/g) || []) assert.ok(p.steps.te[i].includes(n), `${id} step ${i} keeps ${n}`);
+    }
+  }
+});
+
 test('agent runs an LLM tool loop and keeps tool output verbatim', async () => {
   const calls = [];
   const fakeFetch = async (_url, init) => {

@@ -4,3 +4,6 @@ data/
 *.db
 *.db-*
 .analytics-salt
+
+# AgentFoundry (CodeNow) local session data
+.codenow/

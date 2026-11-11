@@ -24,8 +24,33 @@ const T = {
     thinking: 'सोच रहा हूँ…', you: 'आप', error: 'कुछ गड़बड़ हुई। फिर कोशिश करें, या 15100 पर कॉल करें।',
     fill_note: 'जो पता है वह भरें; बाकी [ब्रैकेट] में रहेगा। हस्ताक्षर से पहले जाँच लें।',
   },
+  te: {
+    nav_impact: 'ప్రభావం', hero_title: 'న్యాయ సమస్య ఉందా? తర్వాత ఏం చేయాలో ఉచితంగా తెలుసుకోండి.',
+    hero_sub: 'మీ మాటల్లో ఏమి జరిగిందో చెప్పండి. తర్వాత చేయాల్సిన స్పష్టమైన అడుగులు, సరైన హెల్ప్‌లైన్, ఉచిత న్యాయవాది అర్హత, నింపుకునే లేఖ మీకు అందుతాయి.',
+    sos: 'ఇప్పుడు ప్రమాదంలో ఉన్నారా?', free_lawyer: 'ఉచిత న్యాయవాది:', ask_label: 'మీ సమస్య వివరించండి',
+    ask_ph: 'ఉదాహరణ: కాంట్రాక్టర్ నాకు 2 నెలల జీతం ఇవ్వలేదు', send: 'సహాయం పొందండి',
+    privacy_note: 'మీరు టైప్ చేసినది మేము సేవ్ చేయము. సైన్-అప్ అవసరం లేదు. మేము పేరు లేని లెక్కలు మాత్రమే ఉంచుతాము.',
+    aid_title: 'నాకు ఉచిత న్యాయవాది దొరుకుతారా?', aid_sub: 'న్యాయ సేవల అధికార సంస్థల చట్టం, 1987 లోని సెక్షన్ 12 ప్రకారం చాలా మందికి ఉచిత న్యాయ సహాయం లభిస్తుంది. మీకు వర్తించేవి ఎంచుకోండి.',
+    income: 'కుటుంబ వార్షిక ఆదాయం (₹), పైవాటిలో ఏదీ వర్తించకపోతే', state: 'రాష్ట్రం', check: 'తనిఖీ చేయండి',
+    fb_q: 'ఇది ఉపయోగపడిందా?', yes: 'అవును', no: 'లేదు', thanks: 'ధన్యవాదాలు!',
+    fu_q: 'మళ్ళీ స్వాగతం. గతసారి మీరు సహాయం కోసం వచ్చారు. తర్వాతి అడుగు వేశారా?',
+    fu_yes: 'అవును, వేశాను', fu_resolved: 'సమస్య పరిష్కారమైంది', fu_no: 'ఇంకా లేదు',
+    disclaimer: 'ఇది సాధారణ న్యాయ సమాచారం, న్యాయ సలహా కాదు. మీ కేసు గురించి న్యాయవాదితో మాట్లాడండి. ఉచిత న్యాయవాది కోసం 15100కు కాల్ చేయండి.',
+    oss: 'ఓపెన్ సోర్స్ (MIT).', steps: 'తదుపరి అడుగులు', helplines: 'హెల్ప్‌లైన్‌లు', sources: 'అధికారిక మూలాలు',
+    draft: 'డ్రాఫ్ట్ లేఖ', make_draft: 'లేఖ తయారు చేయండి', copy: 'కాపీ చేయండి', download: 'డౌన్‌లోడ్ చేయండి', copied: 'కాపీ అయింది',
+    thinking: 'ఆలోచిస్తున్నాను…', you: 'మీరు', error: 'ఏదో పొరపాటు జరిగింది. మళ్ళీ ప్రయత్నించండి, లేదా 15100కు కాల్ చేయండి.',
+    fill_note: 'మీకు తెలిసినవి నింపండి; మిగతావి [బ్రాకెట్లలో] ఉంటాయి. సంతకం చేసే ముందు సరిచూసుకోండి.',
+  },
 };
 const CAT_HI = { sc_st: 'अनुसूचित जाति / जनजाति', trafficking: 'मानव तस्करी या बेगार का शिकार', woman: 'महिला', child: 'बच्चा (18 से कम)', disability: 'दिव्यांग व्यक्ति', disaster: 'आपदा, जातीय हिंसा या अत्याचार का शिकार', industrial_worker: 'औद्योगिक कामगार', custody: 'हिरासत में व्यक्ति' };
+const CAT_TE = { sc_st: 'షెడ్యూల్డ్ కులాలు / తెగలు (SC / ST)', trafficking: 'మనుషుల అక్రమ రవాణా లేదా వెట్టిచాకిరీ బాధితులు', woman: 'మహిళ', child: 'బాలలు (18 ఏళ్ల లోపు)', disability: 'దివ్యాంగులు', disaster: 'విపత్తు, కుల హింస లేదా దౌర్జన్యాల బాధితులు', industrial_worker: 'పారిశ్రామిక కార్మికులు', custody: 'కస్టడీలో ఉన్నవారు' };
+const CAT = { hi: CAT_HI, te: CAT_TE };
+const AID_LABELS = {
+  en: { eligible: '✅ You are entitled to free legal aid', check_with_dlsa: 'ℹ️ Confirm with your District Legal Services Authority', need_more_info: 'Need a little more information' },
+  hi: { eligible: '✅ आप मुफ़्त कानूनी सहायता के पात्र हैं', check_with_dlsa: 'ℹ️ अपने ज़िला विधिक सेवा प्राधिकरण से पुष्टि करें', need_more_info: 'थोड़ी और जानकारी चाहिए' },
+  te: { eligible: '✅ మీకు ఉచిత న్యాయ సహాయం పొందే హక్కు ఉంది', check_with_dlsa: 'ℹ️ మీ జిల్లా న్యాయ సేవల అధికార సంస్థ (DLSA) వద్ద నిర్ధారించుకోండి', need_more_info: 'ఇంకొంచెం సమాచారం కావాలి' },
+};
+const DANGER = { en: 'In danger? Call 112 now.', hi: 'ख़तरे में हैं? अभी 112 पर कॉल करें।', te: 'ప్రమాదంలో ఉన్నారా? ఇప్పుడే 112కు కాల్ చేయండి.' };
 const FIELD_LABELS = {
   name: 'Your full name', address: 'Your address', phone: 'Phone', district: 'District', state: 'State',
   category_or_income: 'Why you are eligible (e.g. I am a woman)', problem_summary: 'What happened (short)',
@@ -36,7 +61,12 @@ const FIELD_LABELS = {
   police_station: 'Police station', incident_date: 'Date of incident', incident_summary: 'What happened', date_approached: 'Date you went to the police',
 };
 
-let lang = store.get('ns_lang') || ((navigator.language || '').startsWith('hi') ? 'hi' : 'en');
+const LANG_ORDER = ['en', 'hi', 'te'];
+const langLabel = { en: 'English', hi: 'हिंदी', te: 'తెలుగు' };
+const browserLang = (navigator.language || '').slice(0, 2);
+let lang = LANG_ORDER.includes(store.get('ns_lang')) ? store.get('ns_lang') : (LANG_ORDER.includes(browserLang) ? browserLang : 'en');
+const nextLang = () => LANG_ORDER[(LANG_ORDER.indexOf(lang) + 1) % LANG_ORDER.length];
+
 let config = null;
 let current = { problem_type: null };
 const history = [];
@@ -83,7 +113,7 @@ function applyLang() {
     if (!n.dataset.enPh) n.dataset.enPh = n.placeholder;
     n.placeholder = lang === 'en' ? n.dataset.enPh : t(n.dataset.i18nPh, n.dataset.enPh);
   }
-  $('#lang-toggle').textContent = lang === 'en' ? 'हिंदी' : 'English';
+  $('#lang-toggle').textContent = langLabel[nextLang()];
   renderAidCats();
 }
 
@@ -104,7 +134,7 @@ function renderGuidance(g) {
   if (!g) return;
   box.append(...[
     el('h2', {}, g.title),
-    g.urgent ? el('p', { class: 'urgent' }, lang === 'hi' ? 'ख़तरे में हैं? अभी 112 पर कॉल करें।' : 'In danger? Call 112 now.') : null,
+    g.urgent ? el('p', { class: 'urgent' }, DANGER[lang] || DANGER.en) : null,
     el('h3', {}, t('steps', 'Next steps')),
     el('ol', {}, g.steps.map((s) => el('li', {}, s))),
     g.helplines.length ? el('h3', {}, t('helplines', 'Helplines')) : null,
@@ -120,11 +150,11 @@ function renderAidCats() {
   const wrap = $('#aid-cats');
   const checked = new Set([...wrap.querySelectorAll('input:checked')].map((i) => i.value));
   wrap.replaceChildren(...Object.entries(config.aid_categories).map(([id, label]) =>
-    el('label', { class: 'check' }, Object.assign(el('input', { type: 'checkbox', value: id }), { checked: checked.has(id) }), ' ', lang === 'hi' ? CAT_HI[id] || label : label)));
+    el('label', { class: 'check' }, Object.assign(el('input', { type: 'checkbox', value: id }), { checked: checked.has(id) }), ' ', (CAT[lang] && CAT[lang][id]) || label)));
 }
 
 function renderAidResult(r) {
-  const labels = { eligible: lang === 'hi' ? '✅ आप मुफ़्त कानूनी सहायता के पात्र हैं' : '✅ You are entitled to free legal aid', check_with_dlsa: lang === 'hi' ? 'ℹ️ अपने ज़िला विधिक सेवा प्राधिकरण से पुष्टि करें' : 'ℹ️ Confirm with your District Legal Services Authority', need_more_info: lang === 'hi' ? 'थोड़ी और जानकारी चाहिए' : 'Need a little more information' };
+  const labels = AID_LABELS[lang] || AID_LABELS.en;
   $('#aid-result').replaceChildren(el('div', { class: `aid ${r.result}` }, el('strong', {}, labels[r.result] || r.result), el('p', {}, r.reason), el('p', {}, r.next), helplineLink({ number: '15100', name: 'NALSA' })));
 }
 
@@ -187,7 +217,7 @@ async function ask(text, problem_type) {
 
 $('#ask').addEventListener('submit', (e) => { e.preventDefault(); const v = $('#msg').value.trim(); if (!v) return; $('#msg').value = ''; ask(v); });
 $('#msg').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#ask').requestSubmit(); } });
-$('#lang-toggle').addEventListener('click', () => { lang = lang === 'en' ? 'hi' : 'en'; store.set('ns_lang', lang); applyLang(); });
+$('#lang-toggle').addEventListener('click', () => { lang = nextLang(); store.set('ns_lang', lang); applyLang(); });
 $('#aid-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const categories = [...document.querySelectorAll('#aid-cats input:checked')].map((i) => i.value);

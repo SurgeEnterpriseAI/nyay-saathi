@@ -77,7 +77,8 @@ export function createApp({ analytics = openAnalytics(), env = process.env, fetc
         const out = await agentTurn(body, { env, fetchImpl });
         const c = ctx(req, body);
         const base = { sid: body.sid, problem_type: out.problem_type, ...c };
-        const lang = body.language === 'hi' || /[ऀ-ॿ]/.test(String(body.message || '')) ? 'hi' : 'en';
+        const msg = String(body.message || '');
+        const lang = body.language === 'te' || /[ఀ-౿]/.test(msg) ? 'te' : body.language === 'hi' || /[ऀ-ॿ]/.test(msg) ? 'hi' : 'en';
         analytics.record({ ...base, kind: 'agent_turn', lang, mode: out.mode });
         for (const d of out.drafts) analytics.record({ ...base, kind: 'draft_made', lang, value: d.kind });
         if (out.eligibility) analytics.record({ ...base, kind: 'aid_checked', lang, value: out.eligibility.result });
