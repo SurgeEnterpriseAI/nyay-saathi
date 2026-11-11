@@ -166,3 +166,23 @@ test('extraBody parses LLM_EXTRA_BODY and ignores bad JSON', async () => {
   assert.deepEqual(extraBody({ LLM_EXTRA_BODY: '{bad' }), {});
   assert.deepEqual(extraBody({}), {});
 });
+
+test('replies are plain text and never show a helpline number no tool returned', async () => {
+  const { plainText, unverifiedNumbers } = await import('../src/agent.js');
+  assert.equal(plainText('Call **15100** now.\n## Steps'), 'Call 15100 now.\nSteps');
+  assert.deepEqual(unverifiedNumbers('Call 181 or 1091.', '{"number":"181"}'), ['1091']);
+  assert.deepEqual(unverifiedNumbers('You are owed ₹1500 and 1200 rupees since 2026.', ''), []);
+  const replies = ['', 'మీరు 1091కి కాల్ చేయండి. **181** (పోలీసు)'];
+  const fakeFetch = async (_url, init) => {
+    const body = JSON.parse(init.body);
+    const msg = body.messages.at(-1).role === 'tool'
+      ? { role: 'assistant', content: replies[1] }
+      : { role: 'assistant', content: '', tool_calls: [{ id: 'a', type: 'function', function: { name: 'get_guidance', arguments: '{"problem_type":"domestic_violence","language":"te"}' } }] };
+    return { ok: true, json: async () => ({ choices: [{ message: msg }] }) };
+  };
+  const r = await agentTurn({ message: 'నా భర్త నన్ను కొడతాడు' }, { env: { LLM_BASE_URL: 'http://x/v1', LLM_MODEL: 'm' }, fetchImpl: fakeFetch });
+  assert.deepEqual(r.reply_replaced, ['1091']);
+  assert.doesNotMatch(r.reply, /1091|\*\*/);
+  assert.match(r.reply, /112/);
+  assert.match(r.reply, /[ఀ-౿]/);
+});

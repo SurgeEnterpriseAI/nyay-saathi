@@ -14,7 +14,25 @@ Rules:
 - Women, children, SC/ST, persons with disability and workers usually get a free lawyer: call check_legal_aid when relevant.
 - Offer a draft with draft_document when one is available. Pass only facts the person gave.
 - Reply in the person's language (Hindi if they write in Hindi or Hinglish, Telugu if they write in Telugu). Use short, plain sentences. At most 6 sentences; the app shows steps and drafts separately, so do not repeat them in full.
+- Mention a helpline only with the exact number and name a tool returned.
+- Plain text only: no Markdown (no **, #, or tables).
 - You give legal information, not legal advice. Do not guess outcomes of cases.`;
+
+// The app shows replies as plain text, so drop Markdown emphasis and headings the model may still add.
+export function plainText(text) {
+  return String(text || '')
+    .replace(/\*\*(.+?)\*\*/gs, '$1').replace(/__(.+?)__/gs, '$1').replace(/`([^`]*)`/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '').replace(/\*\*/g, '').trim();
+}
+
+// Short codes like 1091 or 100 that look like Indian helplines. Money (₹1500, 1500 rupees) is not a helpline.
+const SHORT_CODE = /(?<![\d₹.,/-])(?<!Rs\.? ?)(?<!INR ?)\b1\d{2,4}\b(?![\d,/-]|\.\d)(?! ?(?:rupees|rs\b|रुपये|రూపాయ))/giu;
+
+// Guard: every helpline-like number in the reply must come from a tool result or from the person.
+export function unverifiedNumbers(reply, allowedText) {
+  const allowed = new Set(String(allowedText).match(/\d+/g) || []);
+  return [...String(reply).matchAll(SHORT_CODE)].map((m) => m[0]).filter((n) => !allowed.has(n));
+}
 
 export function llmConfigured(env = process.env) {
   return Boolean(env.LLM_BASE_URL && env.LLM_MODEL);
@@ -140,11 +158,19 @@ export async function agentTurn({ message, history = [], language, problem_type 
         messages.push({ role: 'tool', tool_call_id: c.id, content: JSON.stringify(result) });
       }
     }
+    out.reply = plainText(out.reply);
     if (!out.reply) out.reply = out.guidance ? `${out.guidance.title}: see the steps below.` : 'Please tell me a little more about what happened.';
     // Guard: if the model answered without grounding, attach verified guidance ourselves.
     if (!out.guidance) {
       const type = classifyOffline(text);
       if (type) runTool('get_guidance', { problem_type: type, language: lang }, out);
+    }
+    // Guard: a helpline number no tool returned is never shown; use the verified offline reply instead.
+    const grounded = [text, ...messages.filter((m) => m.role === 'tool').map((m) => m.content), JSON.stringify(out.guidance || {}), JSON.stringify(out.eligibility || {})].join(' ');
+    const bad = unverifiedNumbers(out.reply, grounded);
+    if (bad.length) {
+      out.reply = offlineTurn(text, lang, out.problem_type || problem_type).reply;
+      out.reply_replaced = bad.slice(0, 3);
     }
     return out;
   } catch (err) {
