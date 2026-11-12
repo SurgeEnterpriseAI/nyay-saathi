@@ -18,6 +18,14 @@
 - Draft letters: legal aid application, RTI application, consumer complaint, wage demand, complaint to the Superintendent of Police.
 - The cheapest path first: a written demand, consumer helpline grievance, RTI, legal-aid mediation or Lok Adalat.
 
+## Guides (plain HTML, no JavaScript needed)
+- [Free legal help websites in India: what each one does](https://nyaysaathi.surgesoftware.co.in/guides/free-legal-help-websites-india): NALSA (15100), Tele-Law, Nyaaya, National Consumer Helpline, RTI Online, e-Courts, and where Nyay Saathi fits.
+- [Who can get a free lawyer in India (section 12, Legal Services Authorities Act)](https://nyaysaathi.surgesoftware.co.in/guides/who-can-get-free-lawyer-india): who is entitled, how to apply, and the legal aid application letter.
+- [RTI application format](https://nyaysaathi.surgesoftware.co.in/guides/rti-application-format): fee, 30-day reply, first appeal, and the RTI letter.
+- [Consumer complaint letter format](https://nyaysaathi.surgesoftware.co.in/guides/consumer-complaint-letter-format): letter to the seller, National Consumer Helpline 1915, e-Daakhil.
+- [Unpaid salary or wages demand letter](https://nyaysaathi.surgesoftware.co.in/guides/unpaid-salary-demand-letter): demand letter, Labour Department claim, free legal aid.
+- [Police not registering your FIR: complaint to the Superintendent of Police](https://nyaysaathi.surgesoftware.co.in/guides/police-not-registering-fir-complaint-to-sp): section 173(4) and 175(3) BNSS, and the complaint letter.
+
 ## Links
 - Use it free: https://nyaysaathi.surgesoftware.co.in/
 - Live usage numbers: https://nyaysaathi.surgesoftware.co.in/impact

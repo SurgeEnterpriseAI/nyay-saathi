@@ -186,3 +186,37 @@ test('replies are plain text and never show a helpline number no tool returned',
   assert.match(r.reply, /112/);
   assert.match(r.reply, /[ఀ-౿]/);
 });
+
+test('guide pages are served as crawlable HTML with canonical, JSON-LD and only known helplines', async () => {
+  const { readdirSync, readFileSync } = await import('node:fs');
+  const { HELPLINES } = await import('../src/knowledge.js');
+  const known = new Set(Object.values(HELPLINES).map((h) => h.number));
+  const slugs = readdirSync(new URL('../public/guides/', import.meta.url)).filter((f) => f.endsWith('.html')).map((f) => f.slice(0, -5));
+  assert.ok(slugs.length >= 4);
+  const sitemap = readFileSync(new URL('../public/sitemap.xml', import.meta.url), 'utf8');
+  const llms = readFileSync(new URL('../public/llms.txt', import.meta.url), 'utf8');
+  const home = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
+  assert.match(home, /href="\/guides\/free-legal-help-websites-india"/);
+  const server = createApp({ analytics: openAnalytics(':memory:'), env: {} }).listen(0);
+  const base = `http://127.0.0.1:${server.address().port}`;
+  try {
+    for (const slug of slugs) {
+      const url = `https://nyaysaathi.surgesoftware.co.in/guides/${slug}`;
+      assert.ok(sitemap.includes(`<loc>${url}</loc>`), `sitemap lists ${slug}`);
+      assert.ok(llms.includes(url), `llms.txt lists ${slug}`);
+      const r = await fetch(`${base}/guides/${slug}`);
+      assert.equal(r.status, 200);
+      assert.match(r.headers.get('content-type'), /text\/html/);
+      const html = await r.text();
+      assert.ok(html.includes(`<link rel="canonical" href="${url}">`));
+      assert.match(html, /<title>[^<]+<\/title>/);
+      assert.match(html, /<meta name="description" content="[^"]{50,}">/);
+      const ld = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+      const types = ld['@graph'].map((n) => n['@type']);
+      assert.ok(types.includes('FAQPage') && types.includes('WebPage'));
+      for (const [, n] of html.matchAll(/href="tel:(\d+)"/g)) assert.ok(known.has(n), `unknown helpline ${n} on ${slug}`);
+    }
+    assert.equal((await fetch(`${base}/guides/../package`)).status, 404);
+    assert.equal((await fetch(`${base}/guides/nope`)).status, 404);
+  } finally { server.close(); }
+});

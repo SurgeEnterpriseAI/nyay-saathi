@@ -109,7 +109,7 @@ export function createApp({ analytics = openAnalytics(), env = process.env, fetc
       if (req.method === 'GET' && p === '/api/impact.csv') return send(res, 200, analytics.dailyCsv(), { 'content-type': 'text/csv; charset=utf-8' });
 
       if (req.method === 'GET' || req.method === 'HEAD') {
-        const rel = p === '/' ? '/index.html' : p === '/impact' ? '/impact.html' : p;
+        const rel = p === '/' ? '/index.html' : p === '/impact' ? '/impact.html' : /^\/guides\/[a-z0-9-]+$/.test(p) ? `${p}.html` : p;
         const file = normalize(join(ROOT, rel));
         if (!file.startsWith(ROOT)) return send(res, 404, 'not found');
         try {
