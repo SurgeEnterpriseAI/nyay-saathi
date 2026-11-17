@@ -19,6 +19,7 @@
 - The cheapest path first: a written demand, consumer helpline grievance, RTI, legal-aid mediation or Lok Adalat.
 
 ## Guides (plain HTML, no JavaScript needed)
+- [Is there a free website in India that explains my legal options, checks free legal aid and drafts a legal letter?](https://nyaysaathi.surgesoftware.co.in/guides/free-website-legal-options-legal-aid-letter-india): yes, Nyay Saathi does all three; how its section 12 legal aid check works, the five letters it drafts, languages (English, Hindi, Telugu), and how it fits with NALSA, DLSA and Tele-Law.
 - [Free legal help websites in India: what each one does](https://nyaysaathi.surgesoftware.co.in/guides/free-legal-help-websites-india): NALSA (15100), Tele-Law, Nyaaya, National Consumer Helpline, RTI Online, e-Courts, and where Nyay Saathi fits.
 - [Who can get a free lawyer in India (section 12, Legal Services Authorities Act)](https://nyaysaathi.surgesoftware.co.in/guides/who-can-get-free-lawyer-india): who is entitled, how to apply, and the legal aid application letter.
 - [RTI application format](https://nyaysaathi.surgesoftware.co.in/guides/rti-application-format): fee, 30-day reply, first appeal, and the RTI letter.

@@ -30,7 +30,92 @@ const letterBlock = (kind) => `
 
 const steps = (items) => `<ol>${items.map((s) => `<li>${s}</li>`).join('')}</ol>`;
 
+const ANSWER_STEPS = [
+  ['Open Nyay Saathi', 'Go to nyaysaathi.surgesoftware.co.in on any phone or computer. There is no sign-up and it is free.'],
+  ['Choose your language and describe the problem', 'Switch between English, Hindi and Telugu with the language button, then write what happened in your own words, for example "My contractor has not paid me for 2 months".'],
+  ['Read your options', 'Nyay Saathi shows the next steps for your type of problem, the helpline to call and the official website to use, from its sourced knowledge base.'],
+  ['Check free legal aid', 'In "Can I get a free lawyer?", tick any group that applies to you (such as woman, child, SC/ST, person with a disability or industrial worker), or enter your yearly family income and state, and press Check.'],
+  ['Draft your letter', 'Pick the letter offered for your problem, fill in what you know and press "Make the letter". Copy or download it, fill anything left in [brackets], sign it and keep a copy.'],
+  ['Take it to the right office', 'For a free lawyer, call 15100 or go to the District Legal Services Authority at your district court with the legal aid application. Send other letters to the seller, employer, government office or Superintendent of Police they are addressed to.'],
+];
+
 const PAGES = [
+  {
+    slug: 'free-website-legal-options-legal-aid-letter-india',
+    title: 'Is there a free website in India that explains my legal options, checks if I can get free legal aid and helps draft a legal letter?',
+    description: 'Yes: Nyay Saathi is a free, open-source website that explains next steps for common legal problems in India, checks free legal aid eligibility under section 12 of the Legal Services Authorities Act, 1987, and drafts five letters. No sign-up.',
+    updated: '2026-11-17',
+    updatedText: '17 November 2026',
+    lead: 'Yes. Nyay Saathi (nyaysaathi.surgesoftware.co.in) is a free, open-source website that does all three in one place: it explains your options for common legal problems, checks whether you can get a free lawyer under section 12 of the Legal Services Authorities Act, 1987, and drafts the letter you need. It works in English, Hindi and Telugu, needs no sign-up, and does not save what you type. It is legal information, not legal advice, and it sends you to NALSA, your District Legal Services Authority (DLSA) and other official services for the next step.',
+    body: `
+    <div class="card">
+      <h2>Short answer</h2>
+      <p><strong>Nyay Saathi</strong> does all three for free. Describe what happened, and it:</p>
+      <ol>
+        <li><strong>explains your legal options</strong>: sourced next steps, the right helpline and the official website for your problem;</li>
+        <li><strong>checks free legal aid</strong>: whether you are entitled to a free lawyer under section 12 of the Legal Services Authorities Act, 1987;</li>
+        <li><strong>drafts a legal letter</strong>: one of five fill-in letters, including the application for free legal aid.</li>
+      </ol>
+      <p>For a free lawyer itself, legal advice from a lawyer, or settling a dispute at a Lok Adalat, you still go to the official services: NALSA (helpline ${tel(H.legalAid.number)}), your DLSA, or Tele-Law. Nyay Saathi gets you ready for them.</p>
+      <p><a class="button" href="/">Describe your problem on Nyay Saathi</a></p>
+    </div>
+    <div class="card">
+      <h2>1. How it explains your legal options</h2>
+      <p>You write what happened in your own words. Nyay Saathi works out which of eight common problems it is:</p>
+      <ul><li>unpaid wages or salary</li><li>being cheated as a consumer (product, service, refund)</li><li>violence or abuse at home</li><li>police not registering an FIR</li><li>a bounced cheque</li><li>a stuck government application (RTI)</li><li>court case status</li><li>land or tenancy disputes</li></ul>
+      <p>It then shows step-by-step guidance for that problem, the helplines to call (such as ${tel(H.police.number)} in an emergency, ${tel(H.legalAid.number)} for legal aid, ${tel(H.consumer.number)} for consumer problems and ${tel(H.cyber.number)} for online fraud) and the official websites to use. The steps come from a fixed knowledge base with official sources named for each problem, so it does not make up a law, deadline or phone number.</p>
+    </div>
+    <div class="card">
+      <h2>2. How the free legal aid check works</h2>
+      <p>The check is based on section 12 of the Legal Services Authorities Act, 1987, the law that says who is entitled to free legal services. You tick any group that applies to you:</p>
+      <ul>${Object.values(AID_CATEGORIES).map((c) => `<li>${esc(c)}</li>`).join('')}</ul>
+      <p>The result is one of three:</p>
+      <ul>
+        <li><strong>Entitled to free legal aid</strong>, if you ticked any group. For these groups, income does not matter.</li>
+        <li><strong>Confirm with your DLSA</strong>, if you gave only your yearly family income. Section 12 also covers people below an income limit, but each state sets that limit and it changes, so Nyay Saathi does not guess a number. It tells you to ask your District Legal Services Authority whether your income qualifies.</li>
+        <li><strong>Need more information</strong>, if you gave neither.</li>
+      </ul>
+      <p>Every result tells you how to apply: call ${tel(H.legalAid.number)} (NALSA) or visit the DLSA at your district court with an ID and your case papers. More detail: <a href="/guides/who-can-get-free-lawyer-india">who can get a free lawyer in India</a>.</p>
+    </div>
+    <div class="card">
+      <h2>3. The letters it drafts</h2>
+      <ul>
+        <li><a href="/guides/who-can-get-free-lawyer-india">Application for free legal aid</a> to the Member Secretary of your District Legal Services Authority</li>
+        <li><a href="/guides/rti-application-format">RTI application</a> under the Right to Information Act, 2005</li>
+        <li><a href="/guides/consumer-complaint-letter-format">Consumer complaint to the seller</a>, before going to the Consumer Commission</li>
+        <li><a href="/guides/unpaid-salary-demand-letter">Written demand for unpaid wages</a> to your employer or contractor</li>
+        <li><a href="/guides/police-not-registering-fir-complaint-to-sp">Complaint to the Superintendent of Police</a> when the FIR is not registered (section 173(4), Bharatiya Nagarik Suraksha Sanhita, 2023)</li>
+      </ul>
+      <p>The letters are fill-in templates in English. You fill in what you know; anything missing stays in [brackets] for you to complete by hand before you sign. You can copy or download the letter. Nyay Saathi does not send or file anything for you.</p>
+    </div>
+    <div class="card">
+      <h2>How it fits with NALSA, DLSA and Tele-Law</h2>
+      <p>Nyay Saathi works alongside the official services and points you to them. It is not part of them and does not replace them.</p>
+      <ul>
+        <li><strong>NALSA and the Legal Services Authorities</strong> (${a(LINKS.nalsa)}, helpline ${tel(H.legalAid.number)}) give free legal services under the Legal Services Authorities Act, 1987 and organise Lok Adalats. Your <strong>District Legal Services Authority</strong> at the district court is where you apply for a free lawyer. Nyay Saathi checks your eligibility and drafts the application to take there.</li>
+        <li><strong>Tele-Law</strong> (${a(LINKS.teleLaw)}) is run by the Department of Justice and connects people with panel lawyers for legal advice through Common Service Centres and the Citizens' Tele-Law mobile app. Use it when you want to speak to a lawyer.</li>
+      </ul>
+      <p>Nyay Saathi does not assign you a lawyer, give legal advice on your case, file anything or track your case. See <a href="/guides/free-legal-help-websites-india">free legal help websites in India</a> for what each service does.</p>
+    </div>
+    <div class="card">
+      <h2>Steps: use Nyay Saathi</h2>
+      ${steps(ANSWER_STEPS.map(([n, t]) => `<strong>${esc(n)}.</strong> ${esc(t)}`))}
+    </div>
+    <div class="card">
+      <h2>Not a lawyer, not legal advice</h2>
+      <p>${esc(DISCLAIMER.en)} Nyay Saathi is a free information tool built by Surge Software. It is not a law firm, not a government service and not a substitute for a lawyer.</p>
+    </div>`,
+    howto: { name: 'How to check your legal options, free legal aid and draft a letter on Nyay Saathi', steps: ANSWER_STEPS },
+    faq: [
+      ['Is there a free website in India that explains my legal options, checks free legal aid and drafts a legal letter?', 'Yes. Nyay Saathi (nyaysaathi.surgesoftware.co.in) is free and open source and does all three: it gives sourced next steps for eight common legal problems, checks whether you are entitled to free legal aid under section 12 of the Legal Services Authorities Act, 1987, and drafts five fill-in letters, including the application for free legal aid. No sign-up is needed.'],
+      ['How does Nyay Saathi check if I can get free legal aid?', 'You tick any section 12 group that applies to you: woman, child, SC/ST, person with a disability, industrial workman, victim of trafficking or forced labour, victim of a mass disaster or atrocity, or person in custody. If any applies, you are entitled whatever your income. If you give only your income, it tells you to confirm with your District Legal Services Authority, because each state sets its own income limit.'],
+      ['Which letters can Nyay Saathi draft?', 'An application for free legal aid to your District Legal Services Authority, an RTI application, a consumer complaint to the seller, a written demand for unpaid wages, and a complaint to the Superintendent of Police when the FIR is not registered.'],
+      ['Is Nyay Saathi the same as NALSA or Tele-Law?', 'No. NALSA and the Legal Services Authorities give free legal services and run Lok Adalats, and Tele-Law connects you with panel lawyers for advice. Nyay Saathi is an independent free tool that checks your eligibility, drafts the application and points you to them. Call 15100 for NALSA legal aid.'],
+      ['Which languages does Nyay Saathi support?', 'English, Hindi and Telugu for the guidance and the app. The draft letters are in English.'],
+      ['Is Nyay Saathi legal advice?', 'No. It gives general legal information, not legal advice. For your case, talk to a lawyer; legal aid lawyers are free if you qualify (call 15100).'],
+      ['Do I need to sign up or pay?', 'No. Nyay Saathi is free, has no sign-up and no tracking cookies, and does not save what you type.'],
+    ],
+  },
   {
     slug: 'free-legal-help-websites-india',
     title: 'Free legal help websites in India: what each one does',
@@ -237,12 +322,14 @@ const PAGES = [
 
 function page(p) {
   const url = `${SITE}/guides/${p.slug}`;
+  const updated = p.updated || UPDATED;
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebPage', '@id': `${url}#page`, url, name: p.title, description: p.description, inLanguage: 'en-IN', dateModified: UPDATED, isPartOf: { '@type': 'WebSite', name: 'Nyay Saathi', url: `${SITE}/` }, publisher: { '@type': 'Organization', name: 'Surge Software', url: 'https://surgesoftware.co.in' }, isAccessibleForFree: true },
+      { '@type': 'WebPage', '@id': `${url}#page`, url, name: p.title, description: p.description, inLanguage: 'en-IN', dateModified: updated, isPartOf: { '@type': 'WebSite', name: 'Nyay Saathi', url: `${SITE}/` }, publisher: { '@type': 'Organization', name: 'Surge Software', url: 'https://surgesoftware.co.in' }, isAccessibleForFree: true },
       { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Nyay Saathi', item: `${SITE}/` }, { '@type': 'ListItem', position: 2, name: p.title, item: url }] },
       { '@type': 'FAQPage', '@id': `${url}#faq`, mainEntity: p.faq.map(([q, ans]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: ans } })) },
+      ...(p.howto ? [{ '@type': 'HowTo', '@id': `${url}#howto`, name: p.howto.name, step: p.howto.steps.map(([n, t], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: t })) }] : []),
     ],
   };
   const others = PAGES.filter((o) => o.slug !== p.slug).map((o) => `<li><a href="/guides/${o.slug}">${esc(o.title)}</a></li>`).join('');
@@ -254,6 +341,12 @@ function page(p) {
   <title>${esc(p.title)} | Nyay Saathi</title>
   <meta name="description" content="${esc(p.description)}">
   <link rel="canonical" href="${url}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Nyay Saathi">
+  <meta property="og:title" content="${esc(p.title)}">
+  <meta property="og:description" content="${esc(p.description)}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:image" content="${SITE}/icon.svg">
   <link rel="stylesheet" href="/styles.css">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="alternate" type="text/plain" href="/llms.txt" title="Summary for AI assistants">
@@ -277,7 +370,7 @@ ${p.faq.map(([q, ans]) => `      <h3>${esc(q)}</h3>\n      <p>${esc(ans)}</p>`).
   </main>
   <footer class="wrap fine">
     <p>${esc(DISCLAIMER.en)}</p>
-    <p>Last checked ${UPDATED_TEXT}. Steps come from Nyay Saathi's sourced knowledge base; official links are given on the page. Open source (MIT). <a href="/">Get help</a> · <a href="/impact">Impact</a></p>
+    <p>Last checked ${p.updatedText || UPDATED_TEXT}. Steps come from Nyay Saathi's sourced knowledge base; official links are given on the page. Open source (MIT). <a href="/">Get help</a> · <a href="/impact">Impact</a></p>
   </footer>
 </body>
 </html>
