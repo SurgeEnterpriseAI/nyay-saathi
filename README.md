@@ -67,6 +67,29 @@ docker run -p 8080:8080 -v nyay-data:/data nyay-saathi
 
 Mark your own devices as internal testers by opening `/?internal=1` once on each device, so your testing never inflates the impact numbers. `/?internal=0` undoes it.
 
+## Running on Google Cloud Run
+
+```
+ Browser ──HTTPS──▶ Cloud Run: nyay-saathi (Node 22 container, scales to zero, asia-south1)
+                      │  /api/chat ──▶ Gemini (OpenAI-compatible endpoint, tool calling)
+                      │  /api/event, /api/impact ──▶ in-memory SQLite ◀── replayed at start-up
+                      │                                  │ every new event
+                      │                                  ▼
+                      │                              Firestore (impact_events: hashed ids, no text)
+                      └─ secrets: Gemini key, analytics salt ◀── Secret Manager
+ git push ─▶ Cloud Build (Dockerfile) ─▶ Artifact Registry ─▶ Cloud Run revision
+```
+
+Cloud Run instances keep no files between restarts, so the impact numbers can't live in a SQLite file there. Set `ANALYTICS_STORE=firestore` and Firestore becomes the durable event log (`src/firestore-log.js`, Firestore REST API, still no dependencies). Each instance replays the log into in-memory SQLite when it starts and answers `/impact` from there. Each new event is written to Firestore before the response is sent, because Cloud Run throttles CPU once a response has gone out. The service runs with at most one instance, so every request sees the same numbers. `ANALYTICS_SALT` must come from Secret Manager, so that browser ids hash the same way on every instance.
+
+```bash
+PROJECT=<project-id> bash deploy/cloudrun-deploy.sh setup    # APIs, service account, least-privilege IAM
+PROJECT=<project-id> bash deploy/cloudrun-deploy.sh deploy   # Cloud Build + Cloud Run, then a health check
+node scripts/import-impact.js data/analytics.db              # dry run; --write copies old history to Firestore
+```
+
+The script's comments show how to create the two secrets. `.gcloudignore` keeps `.env` files and usage data out of the upload.
+
 ## Project layout
 
 | Path | What it is |
@@ -75,6 +98,9 @@ Mark your own devices as internal testers by opening `/?internal=1` once on each
 | `src/tools.js` | `get_guidance`, `check_legal_aid`, `draft_document` and their schemas |
 | `src/knowledge.js` | Sourced guidance per problem type, helplines, official links |
 | `src/analytics.js` | Privacy-first usage counting (SQLite via `node:sqlite`) |
+| `src/firestore-log.js` | Durable event log in Firestore for Cloud Run (REST, no SDK) |
+| `deploy/cloudrun-deploy.sh` | One-time Cloud Run setup and deploy |
+| `scripts/import-impact.js` | Copies impact history from a SQLite file into Firestore |
 | `src/server.js` | Zero-dependency HTTP server, rate limit, strict CSP |
 | `public/` | Mobile-first web app and the public `/impact` page |
 | `tests/` | `node --test` suite, including a fake-LLM tool-loop test |

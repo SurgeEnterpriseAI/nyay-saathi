@@ -35,7 +35,10 @@ function loadSalt(dbPath) {
   return s;
 }
 
-export function openAnalytics(dbPath = process.env.ANALYTICS_DB || './data/analytics.db') {
+// `sink` (optional) receives every stored row, e.g. a Firestore log on Cloud Run. Its writes are
+// tracked so the server can `await flush()` before answering: Cloud Run throttles CPU after the
+// response, so a write left running in the background might never finish.
+export function openAnalytics(dbPath = process.env.ANALYTICS_DB || './data/analytics.db', { sink } = {}) {
   if (dbPath !== ':memory:') mkdirSync(dirname(dbPath), { recursive: true });
   const db = new DatabaseSync(dbPath);
   db.exec(`CREATE TABLE IF NOT EXISTS events (
@@ -68,9 +71,36 @@ export function openAnalytics(dbPath = process.env.ANALYTICS_DB || './data/analy
     if (VALUES[kind]) { if (!VALUES[kind].has(value)) return false; val = value; }
     else if (typeof value === 'string' && /^[a-z_]{1,24}$/.test(value)) val = value;
     const ts = now.toISOString();
-    insert.run(ts, ts.slice(0, 10), hashSid(sid), kind, pt, lg, md, val, isBotUA(ua) ? 1 : 0, internal ? 1 : 0);
+    const row = { ts, day: ts.slice(0, 10), sid: hashSid(sid), kind, problem_type: pt, lang: lg, mode: md, value: val, is_bot: isBotUA(ua) ? 1 : 0, is_internal: internal ? 1 : 0 };
+    insertRow(row);
+    if (sink) {
+      const p = Promise.resolve().then(() => sink(row)).catch((err) => console.error('analytics sink:', err.message));
+      pending.add(p);
+      p.finally(() => pending.delete(p));
+    }
     return true;
   }
+
+  const pending = new Set();
+  const insertRow = (r) => insert.run(r.ts, r.day, r.sid, r.kind, r.problem_type ?? null, r.lang ?? null, r.mode ?? null, r.value ?? null, r.is_bot ? 1 : 0, r.is_internal ? 1 : 0);
+
+  // Replays already-hashed rows (from a durable log or an export). Rows that don't look like ours are skipped.
+  function load(rows) {
+    let n = 0;
+    db.exec('BEGIN');
+    try {
+      for (const r of rows) {
+        if (!r || !EVENT_KINDS.has(r.kind) || typeof r.ts !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(r.day || '') || !/^[0-9a-f]{16}$/.test(r.sid || '')) continue;
+        insertRow(r);
+        n++;
+      }
+      db.exec('COMMIT');
+    } catch (err) { db.exec('ROLLBACK'); throw err; }
+    return n;
+  }
+
+  const flush = () => Promise.all([...pending]);
+  const rows = () => db.prepare('SELECT ts, day, sid, kind, problem_type, lang, mode, value, is_bot, is_internal FROM events ORDER BY id').all();
 
   function recordClient(evt, ctx) {
     if (!evt || !CLIENT_KINDS.has(evt.kind)) return false;
@@ -112,5 +142,5 @@ export function openAnalytics(dbPath = process.env.ANALYTICS_DB || './data/analy
     return ['day,kind,events,sessions', ...rows.map((r) => `${r.day},${r.kind},${r.events},${r.sessions}`)].join('\n') + '\n';
   }
 
-  return { record, recordClient, summary, dailyCsv, close: () => db.close() };
+  return { record, recordClient, summary, dailyCsv, load, flush, rows, close: () => db.close() };
 }

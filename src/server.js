@@ -7,6 +7,7 @@ import { agentTurn, llmConfigured } from './agent.js';
 import { checkLegalAid, draftDocument, DRAFT_KINDS, AID_CATEGORIES } from './tools.js';
 import { PROBLEMS, HELPLINES } from './knowledge.js';
 import { openAnalytics } from './analytics.js';
+import { createFirestoreLog } from './firestore-log.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml; charset=utf-8' };
@@ -82,6 +83,7 @@ export function createApp({ analytics = openAnalytics(), env = process.env, fetc
         analytics.record({ ...base, kind: 'agent_turn', lang, mode: out.mode });
         for (const d of out.drafts) analytics.record({ ...base, kind: 'draft_made', lang, value: d.kind });
         if (out.eligibility) analytics.record({ ...base, kind: 'aid_checked', lang, value: out.eligibility.result });
+        await analytics.flush?.();
         return send(res, 200, out);
       }
 
@@ -89,6 +91,7 @@ export function createApp({ analytics = openAnalytics(), env = process.env, fetc
         const body = await readJson(req);
         const out = checkLegalAid(body);
         analytics.record({ sid: body.sid, kind: 'aid_checked', value: out.result, lang: body.language, ...ctx(req, body) });
+        await analytics.flush?.();
         return send(res, 200, out);
       }
 
@@ -96,12 +99,14 @@ export function createApp({ analytics = openAnalytics(), env = process.env, fetc
         const body = await readJson(req);
         const out = draftDocument(body);
         if (!out.error) analytics.record({ sid: body.sid, kind: 'draft_made', value: out.kind, problem_type: body.problem_type, lang: body.language, ...ctx(req, body) });
+        await analytics.flush?.();
         return send(res, out.error ? 400 : 200, out);
       }
 
       if (req.method === 'POST' && p === '/api/event') {
         const body = await readJson(req, 2048);
         const ok = analytics.recordClient(body, ctx(req, body));
+        await analytics.flush?.();
         return send(res, ok ? 204 : 400, ok ? '' : { error: 'invalid event' });
       }
 
@@ -124,7 +129,20 @@ export function createApp({ analytics = openAnalytics(), env = process.env, fetc
   });
 }
 
+// ANALYTICS_STORE=firestore (Cloud Run): in-memory SQLite answers the queries, Firestore keeps the
+// events. The salt must come from the environment so every instance hashes browser ids the same way.
+export async function openStore(env = process.env, { fetchImpl = fetch } = {}) {
+  if (env.ANALYTICS_STORE !== 'firestore') return openAnalytics();
+  if (!env.ANALYTICS_SALT) throw new Error('ANALYTICS_SALT is required when ANALYTICS_STORE=firestore');
+  const log = createFirestoreLog({ env, fetchImpl });
+  const analytics = openAnalytics(':memory:', { sink: (row) => log.append(row) });
+  const n = analytics.load(await log.list());
+  console.log(`impact store: replayed ${n} events from Firestore`);
+  return analytics;
+}
+
 if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith('server.js')) {
   const port = Number(process.env.PORT || 8080);
-  createApp().listen(port, () => console.log(`Nyay Saathi on http://localhost:${port} (LLM: ${llmConfigured() ? process.env.LLM_MODEL : 'offline mode'})`));
+  const analytics = await openStore(process.env);
+  createApp({ analytics }).listen(port, () => console.log(`Nyay Saathi on http://localhost:${port} (LLM: ${llmConfigured() ? process.env.LLM_MODEL : 'offline mode'}, impact store: ${process.env.ANALYTICS_STORE || 'sqlite'})`));
 }

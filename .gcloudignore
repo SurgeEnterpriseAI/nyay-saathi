@@ -1,0 +1,16 @@
+# Files never uploaded to Cloud Build. The Dockerfile copies only package.json, src and public,
+# but the upload itself must not carry secrets or usage data either.
+.git
+.gitignore
+.gcloudignore
+.env
+.env.*
+!.env.example
+data/
+*.db
+*.db-*
+.analytics-salt
+node_modules/
+tests/
+docs/
+.codenow
