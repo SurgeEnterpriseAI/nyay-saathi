@@ -60,6 +60,45 @@ const FIELD_LABELS = {
   employer_name: 'Employer / contractor', employer_address: 'Employer address', work_period: 'Period you worked',
   police_station: 'Police station', incident_date: 'Date of incident', incident_summary: 'What happened', date_approached: 'Date you went to the police',
 };
+// Draft form labels and titles in Hindi and Telugu. The letter itself stays an English template (accepted by offices).
+const FIELD_LABELS_I18N = {
+  hi: {
+    name: 'आपका पूरा नाम', address: 'आपका पता', phone: 'फ़ोन', district: 'ज़िला', state: 'राज्य',
+    category_or_income: 'आप पात्र क्यों हैं (जैसे: मैं महिला हूँ)', problem_summary: 'क्या हुआ (छोटे में)',
+    office_name: 'दफ़्तर / विभाग', office_address: 'दफ़्तर का पता', information_sought: 'आपको कौन-सी जानकारी चाहिए',
+    bpl: 'गरीबी रेखा से नीचे? (हाँ/नहीं)', seller_name: 'विक्रेता / कंपनी', seller_address: 'विक्रेता का पता या ईमेल',
+    purchase_date: 'ख़रीद की तारीख़', amount_inr: 'रकम (₹)', relief_sought: 'आप क्या चाहते हैं (रिफ़ंड, बदलाव…)',
+    employer_name: 'मालिक / ठेकेदार', employer_address: 'मालिक का पता', work_period: 'आपने कब से कब तक काम किया',
+    police_station: 'पुलिस थाना', incident_date: 'घटना की तारीख़', incident_summary: 'क्या हुआ', date_approached: 'आप पुलिस के पास किस तारीख़ को गए',
+  },
+  te: {
+    name: 'మీ పూర్తి పేరు', address: 'మీ చిరునామా', phone: 'ఫోన్', district: 'జిల్లా', state: 'రాష్ట్రం',
+    category_or_income: 'మీకు ఎందుకు అర్హత ఉంది (ఉదా: నేను మహిళను)', problem_summary: 'ఏం జరిగింది (క్లుప్తంగా)',
+    office_name: 'కార్యాలయం / శాఖ', office_address: 'కార్యాలయం చిరునామా', information_sought: 'మీకు కావాల్సిన సమాచారం',
+    bpl: 'దారిద్ర్య రేఖకు దిగువన ఉన్నారా? (అవును/కాదు)', seller_name: 'అమ్మినవారు / కంపెనీ', seller_address: 'అమ్మినవారి చిరునామా లేదా ఈమెయిల్',
+    purchase_date: 'కొన్న తేదీ', amount_inr: 'మొత్తం (₹)', relief_sought: 'మీకు ఏం కావాలి (డబ్బు వాపసు, మార్పిడి…)',
+    employer_name: 'యజమాని / కాంట్రాక్టర్', employer_address: 'యజమాని చిరునామా', work_period: 'మీరు పని చేసిన కాలం',
+    police_station: 'పోలీస్ స్టేషన్', incident_date: 'సంఘటన తేదీ', incident_summary: 'ఏం జరిగింది', date_approached: 'మీరు పోలీసుల దగ్గరకు వెళ్లిన తేదీ',
+  },
+};
+const DRAFT_TITLES = {
+  hi: {
+    legal_aid: 'मुफ़्त कानूनी सहायता के लिए आवेदन', rti: 'RTI आवेदन (सूचना का अधिकार अधिनियम, 2005)',
+    consumer_complaint: 'उपभोक्ता शिकायत (आयोग जाने से पहले विक्रेता को)', wage_demand: 'बकाया मज़दूरी के लिए लिखित माँग',
+    sp_complaint: 'पुलिस अधीक्षक (SP) को शिकायत (FIR दर्ज नहीं हुई)',
+  },
+  te: {
+    legal_aid: 'ఉచిత న్యాయ సహాయం కోసం దరఖాస్తు', rti: 'RTI దరఖాస్తు (సమాచార హక్కు చట్టం, 2005)',
+    consumer_complaint: 'వినియోగదారుల ఫిర్యాదు (కమిషన్‌కు వెళ్లే ముందు అమ్మినవారికి)', wage_demand: 'బకాయి జీతం / కూలి కోసం లిఖిత డిమాండ్',
+    sp_complaint: 'పోలీస్ సూపరింటెండెంట్ (SP)కు ఫిర్యాదు (FIR నమోదు కాలేదు)',
+  },
+};
+const LETTER_LANG_NOTE = {
+  hi: 'पत्र अंग्रेज़ी में बनता है, जो सरकारी दफ़्तरों में चलता है। नाम और पते अंग्रेज़ी अक्षरों में लिखना बेहतर है।',
+  te: 'లేఖ ఇంగ్లీష్‌లో తయారవుతుంది, ప్రభుత్వ కార్యాలయాల్లో ఇదే చెల్లుతుంది. పేర్లు, చిరునామాలు ఇంగ్లీష్ అక్షరాల్లో రాయడం మంచిది.',
+};
+const fieldLabel = (f) => (FIELD_LABELS_I18N[lang] && FIELD_LABELS_I18N[lang][f]) || FIELD_LABELS[f] || f;
+const draftTitle = (kind, spec) => (DRAFT_TITLES[lang] && DRAFT_TITLES[lang][kind]) || spec.title;
 
 const LANG_ORDER = ['en', 'hi', 'te'];
 const langLabel = { en: 'English', hi: 'हिंदी', te: 'తెలుగు' };
@@ -170,7 +209,8 @@ function renderDrafts(kinds, made = []) {
     const out = el('pre', { class: 'draft-text' }, madeBy[kind]?.text || '');
     const form = el('form', { class: 'draft-form' },
       el('p', { class: 'muted' }, t('fill_note', 'Fill what you know; the rest stays in [brackets]. Check everything before you sign.')),
-      spec.fields.map((f) => el('label', {}, FIELD_LABELS[f] || f, f.endsWith('summary') || f === 'information_sought' ? el('textarea', { name: f, rows: '3', maxlength: '600' }) : el('input', { name: f, maxlength: '200' }))),
+      LETTER_LANG_NOTE[lang] ? el('p', { class: 'muted' }, LETTER_LANG_NOTE[lang]) : null,
+      spec.fields.map((f) => el('label', {}, fieldLabel(f),f.endsWith('summary') || f === 'information_sought' ? el('textarea', { name: f, rows: '3', maxlength: '600' }) : el('input', { name: f, maxlength: '200' }))),
       el('button', { type: 'submit' }, t('make_draft', 'Make the letter')));
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -185,7 +225,7 @@ function renderDrafts(kinds, made = []) {
       a.click(); track('draft_downloaded', { value: kind });
     });
     const actions = el('div', { class: `row gap ${madeBy[kind] ? '' : 'hidden'}` }, copyBtn, dlBtn);
-    box.append(el('details', { open: '' }, el('summary', {}, spec.title), form, out, actions));
+    box.append(el('details', { open: '' }, el('summary', {}, draftTitle(kind, spec)), form, out, actions));
   }
 }
 
