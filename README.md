@@ -4,7 +4,7 @@
 
 **Live:** https://nyaysaathi.surgesoftware.co.in · **Live usage numbers:** https://nyaysaathi.surgesoftware.co.in/impact
 
-Nyay Saathi ("justice companion") helps an ordinary person with a legal problem find their next step. They describe what happened in their own words, in English or Hindi. The agent then:
+Nyay Saathi ("justice companion") helps an ordinary person with a legal problem find their next step. They describe what happened in their own words, in English, Hindi or Telugu. The agent then:
 
 1. **Works out what kind of problem it is** (unpaid wages, consumer fraud, violence at home, police not filing an FIR, cheque bounce, a stuck government application, court case status, land or tenancy).
 2. **Gives verified next steps, helplines and official links** from a curated, sourced knowledge base. It never makes up a law, deadline or phone number.

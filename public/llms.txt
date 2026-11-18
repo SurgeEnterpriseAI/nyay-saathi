@@ -1,6 +1,6 @@
 # Nyay Saathi
 
-> Nyay Saathi ("justice companion") is a free, open-source legal-help guide for people in India. You describe your problem in English or Hindi; it gives verified next steps, helplines and official links, checks whether you can get a free lawyer under section 12 of the Legal Services Authorities Act, 1987, and drafts the letter you need. No sign-up, no tracking cookies, and nothing you type is saved. Built by Surge Software for Code for a Billion 2026 (MIT licence).
+> Nyay Saathi ("justice companion") is a free, open-source legal-help guide for people in India. You describe your problem in English, Hindi or Telugu; it gives verified next steps, helplines and official links, checks whether you can get a free lawyer under section 12 of the Legal Services Authorities Act, 1987, and drafts the letter you need. No sign-up, no tracking cookies, and nothing you type is saved. Built by Surge Software for Code for a Billion 2026 (MIT licence).
 
 ## Problems it covers
 - Unpaid wages
