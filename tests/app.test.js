@@ -73,7 +73,10 @@ test('every problem has Telugu steps matching the English ones, with no stray sc
     assert.equal(p.steps.te.length, p.steps.en.length, `${id} te step count`);
     for (const s of p.steps.te) assert.doesNotMatch(s, /[ऀ-ॿঀ-৿԰-֏]/, `${id}: ${s}`);
     for (const [i, s] of p.steps.en.entries()) {
-      for (const n of s.match(/\b(112|181|1098|1915|1930|15100)\b/g) || []) assert.ok(p.steps.te[i].includes(n), `${id} step ${i} keeps ${n}`);
+      for (const n of s.match(/\b(112|181|1098|1915|1930|15100|14454)\b/g) || []) {
+        assert.ok(p.steps.te[i].includes(n), `${id} step ${i} keeps ${n}`);
+        assert.ok(p.steps.hi[i].includes(n), `${id} hi step ${i} keeps ${n}`);
+      }
     }
   }
 });
@@ -219,4 +222,79 @@ test('guide pages are served as crawlable HTML with canonical, JSON-LD and only 
     assert.equal((await fetch(`${base}/guides/../package`)).status, 404);
     assert.equal((await fetch(`${base}/guides/nope`)).status, 404);
   } finally { server.close(); }
+});
+
+test('Tele-Law 14454 is a helpline, offered where free advice fits, in every language, and tap-counted', async () => {
+  const { HELPLINES } = await import('../src/knowledge.js');
+  assert.equal(HELPLINES.teleLaw.number, '14454');
+  for (const id of ['unpaid_wages', 'consumer', 'land_property', 'case_status', 'cheque_bounce']) {
+    for (const l of ['en', 'hi', 'te']) {
+      const g = getGuidance({ problem_type: id, language: l });
+      assert.ok(g.helplines.some((h) => h.number === '14454'), `${id} ${l} helpline`);
+      assert.ok(g.steps.some((s) => s.includes('14454')), `${id} ${l} step`);
+    }
+    assert.ok(PROBLEMS[id].sources.includes('https://www.pib.gov.in/PressReleasePage.aspx?PRID=2289459'), `${id} cites the Tele-Law source`);
+  }
+  const a = openAnalytics(':memory:');
+  const ua = 'Mozilla/5.0 (Linux; Android 14)';
+  for (const h of Object.values(HELPLINES)) assert.ok(a.recordClient({ sid: 'abcdefgh1', kind: 'helpline_tapped', value: h.number }, { ua }), `allow-list has ${h.number}`);
+  assert.equal(a.summary().helpline_taps, Object.keys(HELPLINES).length);
+});
+
+test('no e-Daakhil left anywhere: consumer complaints point to e-Jagriti', async () => {
+  const { readdirSync, readFileSync, statSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const root = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
+  const skip = new Set(['.git', 'node_modules', 'data', 'tests']);
+  const hits = [];
+  const walk = (dir) => {
+    for (const name of readdirSync(dir)) {
+      if (skip.has(name)) continue;
+      const p = join(dir, name);
+      if (statSync(p).isDirectory()) walk(p);
+      else if (/\.(js|html|md|txt|json|xml|webmanifest)$/.test(name) && /e-?daakhil/i.test(readFileSync(p, 'utf8'))) hits.push(p);
+    }
+  };
+  walk(root);
+  assert.deepEqual(hits, []);
+  const g = getGuidance({ problem_type: 'consumer' });
+  assert.ok(g.sources.includes('https://e-jagriti.gov.in'));
+  for (const l of ['en', 'hi', 'te']) assert.ok(getGuidance({ problem_type: 'consumer', language: l }).steps.some((s) => s.includes('e-jagriti.gov.in')), l);
+});
+
+test('legal aid result links NALSA\'s online Legal Aid Application', () => {
+  const url = 'https://scourtapp.nic.in/lsams/nologin/applicationFiling.action?requestLocale=en';
+  assert.equal(checkLegalAid({ categories: ['woman'] }).apply_online, url);
+  assert.equal(checkLegalAid({ annual_income_inr: 50000 }).apply_online, url);
+});
+
+test('Send on WhatsApp: wa.me link with URL-encoded, trimmed text, and only a content-free event', async () => {
+  const { whatsappLink, trimForShare, stepsShareText, WA_MAX_CHARS } = await import('../public/share.js');
+  const text = 'Steps & help: 1. Call 14454?\n2. #rights 50% done\nతెలుగు हिंदी';
+  const link = whatsappLink(text);
+  assert.ok(link.startsWith('https://wa.me/?text='));
+  const q = link.slice('https://wa.me/?text='.length);
+  assert.doesNotMatch(q, /[\s&#?%](?![0-9A-F]{2})/, 'no raw spaces, &, #, ? or stray %');
+  assert.equal(decodeURIComponent(q), text);
+  assert.equal(new URL(link).searchParams.get('text'), text);
+  // long text is trimmed to the limit, at a line break, without splitting characters
+  const long = Array.from({ length: 400 }, (_, i) => `${i}. తెలుగు అడుగు`).join('\n');
+  const cut = trimForShare(long);
+  assert.ok(Array.from(cut).length <= WA_MAX_CHARS);
+  assert.ok(cut.endsWith('\n…'));
+  assert.equal(new URL(whatsappLink(long)).searchParams.get('text'), cut);
+  assert.equal(trimForShare('short'), 'short');
+  // the steps text carries the steps and helplines on screen
+  const s = stepsShareText(getGuidance({ problem_type: 'unpaid_wages', language: 'te' }));
+  assert.match(s, /14454/);
+  assert.match(s, /15100/);
+  assert.match(s, /nyaysaathi\.surgesoftware\.co\.in/);
+  // analytics: only "steps" or a letter type, never text
+  const a = openAnalytics(':memory:');
+  const ua = 'Mozilla/5.0 (Linux; Android 14)';
+  assert.ok(a.recordClient({ sid: 'abcdefgh1', kind: 'whatsapp_shared', value: 'steps' }, { ua }));
+  assert.ok(a.recordClient({ sid: 'abcdefgh1', kind: 'whatsapp_shared', value: 'rti' }, { ua }));
+  assert.equal(a.recordClient({ sid: 'abcdefgh1', kind: 'whatsapp_shared', value: 'My name is Lakshmi' }, { ua }), false);
+  assert.equal(a.recordClient({ sid: 'abcdefgh1', kind: 'whatsapp_shared', value: 'some_text' }, { ua }), false);
+  assert.equal(a.summary().whatsapp_shares, 2);
 });

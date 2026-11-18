@@ -1,4 +1,5 @@
 // Nyay Saathi front end. No framework, no third-party scripts, no cookies.
+import { whatsappLink, stepsShareText } from '/share.js';
 const $ = (s) => document.querySelector(s);
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch { return null; } },
@@ -23,6 +24,7 @@ const T = {
     draft: 'ड्राफ़्ट पत्र', make_draft: 'पत्र बनाएँ', copy: 'कॉपी करें', download: 'डाउनलोड', copied: 'कॉपी हो गया',
     thinking: 'सोच रहा हूँ…', you: 'आप', error: 'कुछ गड़बड़ हुई। फिर कोशिश करें, या 15100 पर कॉल करें।',
     fill_note: 'जो पता है वह भरें; बाकी [ब्रैकेट] में रहेगा। हस्ताक्षर से पहले जाँच लें।',
+    wa_share: 'WhatsApp पर भेजें', apply_online: 'या ऑनलाइन आवेदन करें',
   },
   te: {
     nav_impact: 'ప్రభావం', hero_title: 'న్యాయ సమస్య ఉందా? తర్వాత ఏం చేయాలో ఉచితంగా తెలుసుకోండి.',
@@ -40,6 +42,7 @@ const T = {
     draft: 'డ్రాఫ్ట్ లేఖ', make_draft: 'లేఖ తయారు చేయండి', copy: 'కాపీ చేయండి', download: 'డౌన్‌లోడ్ చేయండి', copied: 'కాపీ అయింది',
     thinking: 'ఆలోచిస్తున్నాను…', you: 'మీరు', error: 'ఏదో పొరపాటు జరిగింది. మళ్ళీ ప్రయత్నించండి, లేదా 15100కు కాల్ చేయండి.',
     fill_note: 'మీకు తెలిసినవి నింపండి; మిగతావి [బ్రాకెట్లలో] ఉంటాయి. సంతకం చేసే ముందు సరిచూసుకోండి.',
+    wa_share: 'WhatsApp లో పంపండి', apply_online: 'లేదా ఆన్‌లైన్‌లో దరఖాస్తు చేయండి',
   },
 };
 const CAT_HI = { sc_st: 'अनुसूचित जाति / जनजाति', trafficking: 'मानव तस्करी या बेगार का शिकार', woman: 'महिला', child: 'बच्चा (18 से कम)', disability: 'दिव्यांग व्यक्ति', disaster: 'आपदा, जातीय हिंसा या अत्याचार का शिकार', industrial_worker: 'औद्योगिक कामगार', custody: 'हिरासत में व्यक्ति' };
@@ -128,6 +131,14 @@ function helplineLink(h) {
   return el('a', { class: 'tel', href: `tel:${h.number}`, 'data-helpline': h.number }, `📞 ${h.number}`, ' ', el('span', { class: 'muted' }, h.name));
 }
 
+// "Send on WhatsApp": the link is built at click time from what is on screen. Only the
+// fact of sharing (and whether it was the steps or which letter) is counted, never the text.
+function waButton(getText, value) {
+  const a = el('a', { class: 'button', href: 'https://wa.me/', target: '_blank', rel: 'noopener', 'data-share': value }, t('wa_share', 'Send on WhatsApp'));
+  a.addEventListener('click', () => { a.href = whatsappLink(getText()); });
+  return a;
+}
+
 function renderGuidance(g) {
   const box = $('#guidance');
   box.replaceChildren();
@@ -137,6 +148,7 @@ function renderGuidance(g) {
     g.urgent ? el('p', { class: 'urgent' }, DANGER[lang] || DANGER.en) : null,
     el('h3', {}, t('steps', 'Next steps')),
     el('ol', {}, g.steps.map((s) => el('li', {}, s))),
+    el('p', {}, waButton(() => stepsShareText(g, { steps: t('steps', 'Next steps'), helplines: t('helplines', 'Helplines') }), 'steps')),
     g.helplines.length ? el('h3', {}, t('helplines', 'Helplines')) : null,
     el('div', { class: 'col' }, g.helplines.map(helplineLink)),
     el('h3', {}, t('sources', 'Official sources')),
@@ -155,7 +167,8 @@ function renderAidCats() {
 
 function renderAidResult(r) {
   const labels = AID_LABELS[lang] || AID_LABELS.en;
-  $('#aid-result').replaceChildren(el('div', { class: `aid ${r.result}` }, el('strong', {}, labels[r.result] || r.result), el('p', {}, r.reason), el('p', {}, r.next), helplineLink({ number: '15100', name: 'NALSA' })));
+  $('#aid-result').replaceChildren(el('div', { class: `aid ${r.result}` }, el('strong', {}, labels[r.result] || r.result), el('p', {}, r.reason), el('p', {}, r.next),
+    el('p', {}, helplineLink({ number: '15100', name: 'NALSA' }), r.apply_online ? [' ', el('a', { href: r.apply_online, target: '_blank', rel: 'noopener' }, t('apply_online', 'or apply online'))] : null)));
 }
 
 function renderDrafts(kinds, made = []) {
@@ -184,7 +197,7 @@ function renderDrafts(kinds, made = []) {
       const a = el('a', { href: URL.createObjectURL(new Blob([out.textContent], { type: 'text/plain' })), download: `${kind}.txt` });
       a.click(); track('draft_downloaded', { value: kind });
     });
-    const actions = el('div', { class: `row gap ${madeBy[kind] ? '' : 'hidden'}` }, copyBtn, dlBtn);
+    const actions = el('div', { class: `row gap ${madeBy[kind] ? '' : 'hidden'}` }, copyBtn, dlBtn, waButton(() => out.textContent, kind));
     box.append(el('details', { open: '' }, el('summary', {}, spec.title), form, out, actions));
   }
 }
@@ -227,6 +240,8 @@ $('#aid-form').addEventListener('submit', async (e) => {
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[data-helpline]');
   if (a) track('helpline_tapped', { value: a.dataset.helpline });
+  const share = e.target.closest('a[data-share]');
+  if (share) track('whatsapp_shared', { value: share.dataset.share });
   const fb = e.target.closest('[data-fb]');
   if (fb) { track('feedback', { value: fb.dataset.fb }); $('#feedback').replaceChildren(el('p', {}, t('thanks', 'Thank you!'))); }
   const fu = e.target.closest('[data-fu]');

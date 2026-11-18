@@ -36,7 +36,7 @@ const ANSWER_STEPS = [
   ['Read your options', 'Nyay Saathi shows the next steps for your type of problem, the helpline to call and the official website to use, from its sourced knowledge base.'],
   ['Check free legal aid', 'In "Can I get a free lawyer?", tick any group that applies to you (such as woman, child, SC/ST, person with a disability or industrial worker), or enter your yearly family income and state, and press Check.'],
   ['Draft your letter', 'Pick the letter offered for your problem, fill in what you know and press "Make the letter". Copy or download it, fill anything left in [brackets], sign it and keep a copy.'],
-  ['Take it to the right office', 'For a free lawyer, call 15100 or go to the District Legal Services Authority at your district court with the legal aid application. Send other letters to the seller, employer, government office or Superintendent of Police they are addressed to.'],
+  ['Take it to the right office', 'For a free lawyer, call 15100 or go to the District Legal Services Authority at your district court with the legal aid application. You can also send your steps or your letter to your own phone or a relative with the "Send on WhatsApp" button. Send other letters to the seller, employer, government office or Superintendent of Police they are addressed to.'],
 ];
 
 const PAGES = [
@@ -44,8 +44,8 @@ const PAGES = [
     slug: 'free-website-legal-options-legal-aid-letter-india',
     title: 'Is there a free website in India that explains my legal options, checks if I can get free legal aid and helps draft a legal letter?',
     description: 'Yes: Nyay Saathi is a free, open-source website that explains next steps for common legal problems in India, checks free legal aid eligibility under section 12 of the Legal Services Authorities Act, 1987, and drafts five letters. No sign-up.',
-    updated: '2026-11-17',
-    updatedText: '17 November 2026',
+    updated: '2026-11-18',
+    updatedText: '18 November 2026',
     lead: 'Yes. Nyay Saathi (nyaysaathi.surgesoftware.co.in) is a free, open-source website that does all three in one place: it explains your options for common legal problems, checks whether you can get a free lawyer under section 12 of the Legal Services Authorities Act, 1987, and drafts the letter you need. It works in English, Hindi and Telugu, needs no sign-up, and does not save what you type. It is legal information, not legal advice, and it sends you to NALSA, your District Legal Services Authority (DLSA) and other official services for the next step.',
     body: `
     <div class="card">
@@ -56,7 +56,7 @@ const PAGES = [
         <li><strong>checks free legal aid</strong>: whether you are entitled to a free lawyer under section 12 of the Legal Services Authorities Act, 1987;</li>
         <li><strong>drafts a legal letter</strong>: one of five fill-in letters, including the application for free legal aid.</li>
       </ol>
-      <p>For a free lawyer itself, legal advice from a lawyer, or settling a dispute at a Lok Adalat, you still go to the official services: NALSA (helpline ${tel(H.legalAid.number)}), your DLSA, or Tele-Law. Nyay Saathi gets you ready for them.</p>
+      <p>For a free lawyer itself, legal advice from a lawyer, or settling a dispute at a Lok Adalat, you still go to the official services: NALSA (helpline ${tel(H.legalAid.number)}), your DLSA, or Tele-Law (toll-free ${tel(H.teleLaw.number)}). Nyay Saathi gets you ready for them.</p>
       <p><a class="button" href="/">Describe your problem on Nyay Saathi</a></p>
     </div>
     <div class="card">
@@ -93,7 +93,7 @@ const PAGES = [
       <p>Nyay Saathi works alongside the official services and points you to them. It is not part of them and does not replace them.</p>
       <ul>
         <li><strong>NALSA and the Legal Services Authorities</strong> (${a(LINKS.nalsa)}, helpline ${tel(H.legalAid.number)}) give free legal services under the Legal Services Authorities Act, 1987 and organise Lok Adalats. Your <strong>District Legal Services Authority</strong> at the district court is where you apply for a free lawyer. Nyay Saathi checks your eligibility and drafts the application to take there.</li>
-        <li><strong>Tele-Law</strong> (${a(LINKS.teleLaw)}) is run by the Department of Justice and connects people with panel lawyers for legal advice through Common Service Centres and the Citizens' Tele-Law mobile app. Use it when you want to speak to a lawyer.</li>
+        <li><strong>Tele-Law</strong> (${a(LINKS.teleLaw)}, toll-free ${tel(H.teleLaw.number)}) is run by the Department of Justice and connects people with panel lawyers for legal advice by phone on 14454, through Common Service Centres and the Tele-Law mobile app. Use it when you want to speak to a lawyer. Nyay Saathi shows 14454 as the "talk to a lawyer free now" step for problems such as unpaid wages, consumer complaints, land disputes and court cases.</li>
       </ul>
       <p>Nyay Saathi does not assign you a lawyer, give legal advice on your case, file anything or track your case. See <a href="/guides/free-legal-help-websites-india">free legal help websites in India</a> for what each service does.</p>
     </div>
@@ -110,7 +110,7 @@ const PAGES = [
       ['Is there a free website in India that explains my legal options, checks free legal aid and drafts a legal letter?', 'Yes. Nyay Saathi (nyaysaathi.surgesoftware.co.in) is free and open source and does all three: it gives sourced next steps for eight common legal problems, checks whether you are entitled to free legal aid under section 12 of the Legal Services Authorities Act, 1987, and drafts five fill-in letters, including the application for free legal aid. No sign-up is needed.'],
       ['How does Nyay Saathi check if I can get free legal aid?', 'You tick any section 12 group that applies to you: woman, child, SC/ST, person with a disability, industrial workman, victim of trafficking or forced labour, victim of a mass disaster or atrocity, or person in custody. If any applies, you are entitled whatever your income. If you give only your income, it tells you to confirm with your District Legal Services Authority, because each state sets its own income limit.'],
       ['Which letters can Nyay Saathi draft?', 'An application for free legal aid to your District Legal Services Authority, an RTI application, a consumer complaint to the seller, a written demand for unpaid wages, and a complaint to the Superintendent of Police when the FIR is not registered.'],
-      ['Is Nyay Saathi the same as NALSA or Tele-Law?', 'No. NALSA and the Legal Services Authorities give free legal services and run Lok Adalats, and Tele-Law connects you with panel lawyers for advice. Nyay Saathi is an independent free tool that checks your eligibility, drafts the application and points you to them. Call 15100 for NALSA legal aid.'],
+      ['Is Nyay Saathi the same as NALSA or Tele-Law?', 'No. NALSA and the Legal Services Authorities give free legal services and run Lok Adalats, and Tele-Law connects you with panel lawyers for advice. Nyay Saathi is an independent free tool that checks your eligibility, drafts the application and points you to them. Call 15100 for NALSA legal aid, or 14454 (toll-free) to talk to a Tele-Law lawyer.'],
       ['Which languages does Nyay Saathi support?', 'English, Hindi and Telugu for the guidance and the app. The draft letters are in English.'],
       ['Is Nyay Saathi legal advice?', 'No. It gives general legal information, not legal advice. For your case, talk to a lawyer; legal aid lawyers are free if you qualify (call 15100).'],
       ['Do I need to sign up or pay?', 'No. Nyay Saathi is free, has no sign-up and no tracking cookies, and does not save what you type.'],
@@ -119,7 +119,9 @@ const PAGES = [
   {
     slug: 'free-legal-help-websites-india',
     title: 'Free legal help websites in India: what each one does',
-    description: 'NALSA (15100), Tele-Law, Nyaaya, National Consumer Helpline, RTI Online, e-Courts and Nyay Saathi: which free service to use for which legal problem in India.',
+    description: 'NALSA (15100), Tele-Law (14454), Nyaaya, National Consumer Helpline, e-Jagriti, RTI Online, e-Courts and Nyay Saathi: which free service to use for which legal problem in India.',
+    updated: '2026-11-18',
+    updatedText: '18 November 2026',
     lead: 'India has several free, official or non-profit services for people with a legal problem. They do different jobs, so the right one depends on what you need: a free lawyer, advice, plain-language explanations of the law, a consumer grievance, government information, or your court date. This guide says what each one does and where Nyay Saathi fits.',
     body: `
     <div class="card">
@@ -130,20 +132,23 @@ const PAGES = [
     </div>
     <div class="card">
       <h2>Tele-Law: talk to a panel lawyer for advice</h2>
-      <p>${a(LINKS.teleLaw)}</p>
-      <p>Tele-Law is run by the Department of Justice with CSC e-Governance Services India Limited, with NALSA as a partner. It connects people with panel lawyers for legal advice through Common Service Centres (CSCs) and the Citizens' Tele-Law mobile app.</p>
-      <p><strong>Use it when</strong> you want to speak to a lawyer for advice, for example from a CSC near your village.</p>
+      <p>${a(LINKS.teleLaw)} · toll-free ${tel(H.teleLaw.number)}</p>
+      <p>Tele-Law is run by the Department of Justice with CSC e-Governance Services India Limited. It connects people with panel lawyers for legal advice in three ways: the toll-free number 14454, the Tele-Law mobile app, and Common Service Centres (CSCs).</p>
+      <p>The government's release on Tele-Law also describes the <strong>Nyaya Setu</strong> chatbot, launched on 29 March 2026. You can ask it legal questions by voice or text in 22 Indian languages.</p>
+      <p><strong>Use it when</strong> you want to speak to a lawyer for advice, by phone on 14454 or from a CSC near your village.</p>
+      <p class="fine">Source: ${a(LINKS.teleLawPib, 'Press Information Bureau, Tele-Law release')}.</p>
     </div>
     <div class="card">
       <h2>Nyaaya: plain-language explainers of Indian laws</h2>
       <p>${a('https://nyaaya.org')}</p>
-      <p>Nyaaya is an open-access digital resource with legal explainers grouped by theme (such as family and marriage, or police and courts), guides, videos, and sample forms and templates, with Hindi and Kannada versions. Through "Ask Nyaaya" you can send a legal question to be answered by experts and volunteers.</p>
+      <p>Nyaaya is an open-access digital resource with legal explainers grouped by theme (such as family and marriage, or police and courts), guides, videos, and sample forms and templates, with Hindi and Kannada versions. Through "Ask Nyaaya" you can send a legal question, and their team of lawyers explains how the law applies to you (${a('https://nyaaya.org/ask-nyaaya/', 'nyaaya.org/ask-nyaaya')}).</p>
       <p><strong>Use it when</strong> you want to read about a law and your rights in depth.</p>
     </div>
     <div class="card">
-      <h2>National Consumer Helpline and e-Daakhil: consumer problems</h2>
-      <p>${a(LINKS.consumerHelpline)} · helpline ${tel(H.consumer.number)} · ${a(LINKS.edaakhil)}</p>
-      <p>The National Consumer Helpline is run by the Department of Consumer Affairs. You register a grievance (by phone on 1915, on the portal, or on its app), it is forwarded to the company, and you track the status online. If that does not solve it, you can file a complaint with the District Consumer Commission yourself, without a lawyer, on e-Daakhil.</p>
+      <h2>National Consumer Helpline and e-Jagriti: consumer problems</h2>
+      <p>${a(LINKS.consumerHelpline)} · helpline ${tel(H.consumer.number)} · WhatsApp or SMS +91 8800001915 · ${a(LINKS.eJagriti)}</p>
+      <p>The National Consumer Helpline is run by the Department of Consumer Affairs. You register a grievance by phone on 1915 (8 AM to 8 PM), by WhatsApp or SMS on +91 8800001915, on the portal, or on its app. It works in 17 languages. Your grievance is forwarded to the company, and you track the status online.</p>
+      <p>If that does not solve it, you can file a complaint with the District Consumer Commission yourself, without a lawyer, on e-Jagriti. e-Jagriti is the Department of Consumer Affairs portal for Consumer Commission cases (${a('https://www.pib.gov.in/PressReleasePage.aspx?PRID=2269994', 'PIB release')}).</p>
       <p><strong>Use it when</strong> a seller or service provider has cheated you or will not refund. See the <a href="/guides/consumer-complaint-letter-format">consumer complaint letter</a>.</p>
     </div>
     <div class="card">
@@ -171,14 +176,15 @@ const PAGES = [
         <li>checks whether you can get a free lawyer under section 12 of the Legal Services Authorities Act, 1987;</li>
         <li>drafts the letter you need: a <a href="/guides/who-can-get-free-lawyer-india">legal aid application</a>, an <a href="/guides/rti-application-format">RTI application</a>, a <a href="/guides/consumer-complaint-letter-format">consumer complaint</a>, a <a href="/guides/unpaid-salary-demand-letter">demand for unpaid wages</a> or a <a href="/guides/police-not-registering-fir-complaint-to-sp">complaint to the Superintendent of Police</a>.</li>
       </ol>
-      <p>No sign-up, no tracking cookies, and nothing you type is saved. It does not assign you a lawyer, file anything for you or track your case: for those it points you to NALSA, the DLSA, the consumer helpline, RTI Online or e-Courts.</p>
+      <p>No sign-up, no tracking cookies, and nothing you type is saved. It does not assign you a lawyer, file anything for you or track your case: for those it points you to NALSA, the DLSA, Tele-Law, the consumer helpline, e-Jagriti, RTI Online or e-Courts.</p>
       <p><a class="button" href="/">Describe your problem on Nyay Saathi</a></p>
     </div>`,
     faq: [
       ['Which free website helps me get a free lawyer in India?', 'Free lawyers come through the Legal Services Authorities set up under the Legal Services Authorities Act, 1987: call the NALSA helpline 15100 or visit the District Legal Services Authority at your district court. Nyay Saathi checks whether you fall in a section 12 category and drafts the application for you to take there.'],
       ['Is there a free website that drafts legal letters in India?', 'Nyay Saathi drafts five fill-in letters for free: an application for free legal aid, an RTI application, a consumer complaint to the seller, a written demand for unpaid wages and a complaint to the Superintendent of Police when the FIR is not registered. Nyaaya also publishes sample forms and templates.'],
       ['Where can I read about my legal rights in simple language?', 'Nyaaya (nyaaya.org) publishes plain-language explainers of Indian laws, with Hindi and Kannada versions. Nyay Saathi gives short, sourced next steps for eight common problems.'],
-      ['How do I talk to a lawyer for advice without going to court?', 'Tele-Law, run by the Department of Justice, connects people with panel lawyers through Common Service Centres and the Citizens\' Tele-Law mobile app. You can also call 15100 for legal aid.'],
+      ['How do I talk to a lawyer for advice without going to court?', 'Call Tele-Law on 14454 (toll-free). Tele-Law, run by the Department of Justice, connects people with panel lawyers by phone, through the Tele-Law mobile app and at Common Service Centres. The Nyaya Setu chatbot, launched on 29 March 2026, also answers by voice or text in 22 Indian languages. You can also call 15100 for legal aid.'],
+      ['How do I file a consumer complaint online?', 'First register a grievance with the National Consumer Helpline: call 1915 (8 AM to 8 PM), send a WhatsApp or SMS to +91 8800001915, or use consumerhelpline.gov.in. If that does not solve it, file with the District Consumer Commission yourself, without a lawyer, on e-Jagriti (e-jagriti.gov.in).'],
       ['Do I need to sign up to use Nyay Saathi?', 'No. There is no sign-up and no tracking cookies, and nothing you type is saved.'],
       ['Is Nyay Saathi a replacement for a lawyer?', 'No. It gives general legal information, not legal advice. For your case, talk to a lawyer; legal aid lawyers are free if you qualify (call 15100).'],
     ],
@@ -187,6 +193,8 @@ const PAGES = [
     slug: 'who-can-get-free-lawyer-india',
     title: 'Who can get a free lawyer in India? Section 12, Legal Services Authorities Act',
     description: 'Section 12 of the Legal Services Authorities Act, 1987 lists who gets free legal aid in India: women, children, SC/ST, people with disabilities, industrial workers and more. How to apply via 15100 or your DLSA.',
+    updated: '2026-11-18',
+    updatedText: '18 November 2026',
     lead: 'In India, many people are entitled by law to a free lawyer, whatever their income. The list is in section 12 of the Legal Services Authorities Act, 1987. Women and children alone are more than half the population, yet most people have never heard of legal aid.',
     body: `
     <div class="card">
@@ -208,7 +216,7 @@ const PAGES = [
     <div class="card">
       <h2>How to apply</h2>
       ${steps([
-        `Call ${tel(H.legalAid.number)} (NALSA legal aid helpline), or visit the District Legal Services Authority at your district court.`,
+        `Call ${tel(H.legalAid.number)} (NALSA legal aid helpline), or visit the District Legal Services Authority at your district court. You can also apply online with NALSA's ${a(LINKS.nalsaLegalAidApply, 'Legal Aid Application')} form.`,
         'Bring an ID and any papers about your case.',
         'Say which group you belong to, or what your yearly family income is, and what your problem is. The written application below covers all three.',
       ])}
@@ -219,7 +227,7 @@ const PAGES = [
       ['Can a woman get a free lawyer in India regardless of income?', 'Yes. Section 12(c) of the Legal Services Authorities Act, 1987 makes every woman and every child entitled to free legal services, whatever their income.'],
       ['What is the income limit for free legal aid?', 'Each State Government sets its own limit (the Central Government sets it for Supreme Court cases), and it changes over time. Ask your District Legal Services Authority, or call 15100, whether your yearly family income qualifies.'],
       ['Are industrial workers entitled to free legal aid?', 'Yes. An industrial workman is one of the categories in section 12, so income does not matter.'],
-      ['How do I apply for a free lawyer?', 'Call 15100 or go to the District Legal Services Authority at your district court with an ID and your case papers. You can hand in a written application; Nyay Saathi drafts one for free.'],
+      ['How do I apply for a free lawyer?', 'Call 15100 or go to the District Legal Services Authority at your district court with an ID and your case papers. You can hand in a written application; Nyay Saathi drafts one for free. You can also apply online through the Legal Aid Application linked on nalsa.gov.in.'],
       ['Do I have to prove my income?', 'An affidavit about your income can be enough, unless the Authority has reason to disbelieve it (section 13(2)).'],
     ],
   },
@@ -249,7 +257,9 @@ const PAGES = [
   {
     slug: 'consumer-complaint-letter-format',
     title: 'Consumer complaint letter format: refund, replacement or repair',
-    description: 'Free consumer complaint letter to the seller, then the National Consumer Helpline (1915) and e-Daakhil. File with the District Consumer Commission yourself, within 2 years.',
+    description: 'Free consumer complaint letter to the seller, then the National Consumer Helpline (1915, or WhatsApp +91 8800001915) and e-Jagriti. File with the District Consumer Commission yourself, within 2 years.',
+    updated: '2026-11-18',
+    updatedText: '18 November 2026',
     lead: 'Paid for something that was defective, or a service that was not delivered? Complain to the seller in writing first. If that fails, the National Consumer Helpline and the District Consumer Commission are free routes that do not need a lawyer.',
     body: `
     <div class="card">
@@ -257,15 +267,16 @@ const PAGES = [
       ${steps([
         'Collect the bill or invoice, order screenshots, warranty card and every message with the seller.',
         'Complain to the seller in writing first and give a date to fix it (for example 15 days). The template below does this.',
-        `Register a free grievance with the National Consumer Helpline: call ${tel(H.consumer.number)} or use ${a(LINKS.consumerHelpline)}.`,
-        `If it is still unresolved, file a complaint with the District Consumer Commission online on ${a(LINKS.edaakhil, 'e-Daakhil')}. You can file it yourself without a lawyer. Claims up to ₹50 lakh go to the District Commission.`,
+        `Register a free grievance with the National Consumer Helpline: call ${tel(H.consumer.number)} (8 AM to 8 PM), send a WhatsApp or SMS to +91 8800001915, or use ${a(LINKS.consumerHelpline)}.`,
+        `If it is still unresolved, file a complaint with the District Consumer Commission online on ${a(LINKS.eJagriti, 'e-Jagriti')}. You can file it yourself without a lawyer. Claims up to ₹50 lakh go to the District Commission.`,
         'File within 2 years of the problem arising.',
+        `To talk to a lawyer for free advice, call Tele-Law on ${tel(H.teleLaw.number)} (toll-free).`,
       ])}
     </div>
     ${letterBlock('consumer_complaint')}`,
     faq: [
-      ['Do I need a lawyer to file a consumer complaint?', 'No. You can file a complaint with the District Consumer Commission yourself, online on e-Daakhil.'],
-      ['What is the National Consumer Helpline number?', '1915. You can also register a grievance at consumerhelpline.gov.in.'],
+      ['Do I need a lawyer to file a consumer complaint?', 'No. You can file a complaint with the District Consumer Commission yourself, online on e-Jagriti (e-jagriti.gov.in).'],
+      ['What is the National Consumer Helpline number?', '1915, from 8 AM to 8 PM. You can also send a WhatsApp or SMS to +91 8800001915, or register a grievance at consumerhelpline.gov.in. It works in 17 languages.'],
       ['How long do I have to file a consumer complaint?', 'File within 2 years of the problem arising.'],
       ['Which Consumer Commission do I go to?', 'Claims up to ₹50 lakh go to the District Consumer Commission.'],
     ],
@@ -273,7 +284,9 @@ const PAGES = [
   {
     slug: 'unpaid-salary-demand-letter',
     title: 'Unpaid salary or wages: demand letter and what to do next',
-    description: 'Free demand letter for unpaid wages in India, then a free claim at the district Labour Department office and free legal aid on 15100.',
+    description: 'Free demand letter for unpaid wages in India, then a free claim at the district Labour Department office, free legal aid on 15100 and free advice from a Tele-Law lawyer on 14454.',
+    updated: '2026-11-18',
+    updatedText: '18 November 2026',
     lead: 'If your employer or contractor has not paid you, start with a written demand. If that does not work, a claim at the Labour Department is free, and workers can usually get free legal help.',
     body: `
     <div class="card">
@@ -284,6 +297,7 @@ const PAGES = [
         'Send a short written demand to the employer (the template below). Keep a copy or photo.',
         'If you are not paid, file a claim at your district Labour Department office (Labour Commissioner / Assistant Labour Commissioner). Filing a claim there is free.',
         `Call ${tel(H.legalAid.number)} for free legal aid if the employer still refuses. Workers are usually eligible for free legal help; an industrial workman is entitled under section 12 of the Legal Services Authorities Act, 1987 whatever their income.`,
+        `To talk to a lawyer for free advice now, call Tele-Law on ${tel(H.teleLaw.number)} (toll-free). You can also use the Tele-Law app or a Common Service Centre (CSC) near you.`,
       ])}
     </div>
     ${letterBlock('wage_demand')}`,

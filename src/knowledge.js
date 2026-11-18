@@ -9,16 +9,31 @@ export const HELPLINES = {
   child: { name: 'Childline', number: '1098' },
   consumer: { name: 'National Consumer Helpline', number: '1915' },
   cyber: { name: 'Cyber crime helpline', number: '1930' },
+  // Tele-Law (Department of Justice): free advice from a panel lawyer. Toll-free 14454.
+  // Source: PIB, 25 Jul 2026, https://www.pib.gov.in/PressReleasePage.aspx?PRID=2289459
+  teleLaw: { name: 'Tele-Law: talk to a lawyer free', number: '14454' },
 };
 
 export const LINKS = {
   nalsa: 'https://nalsa.gov.in',
   teleLaw: 'https://www.tele-law.in',
+  teleLawPib: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2289459',
   ecourts: 'https://services.ecourts.gov.in',
   rtiOnline: 'https://rtionline.gov.in',
-  edaakhil: 'https://edaakhil.nic.in',
+  // Consumer Commission complaints are filed on e-Jagriti (Department of Consumer Affairs), which
+  // merged the earlier filing, CONFONET and OCMS systems. PIB https://www.pib.gov.in/PressReleasePage.aspx?PRID=2269994
+  eJagriti: 'https://e-jagriti.gov.in',
   cyber: 'https://cybercrime.gov.in',
   consumerHelpline: 'https://consumerhelpline.gov.in',
+  // "Legal Aid Application" on NALSA's LSMS portal, linked from https://nalsa.gov.in (checked 18 Nov 2026).
+  nalsaLegalAidApply: 'https://scourtapp.nic.in/lsams/nologin/applicationFiling.action?requestLocale=en',
+};
+
+// The "talk to a lawyer free now" step (Tele-Law 14454), added to problems where free advice fits.
+const TELE_LAW_STEP = {
+  en: 'To talk to a lawyer for free advice now, call Tele-Law on 14454 (toll-free). You can also use the Tele-Law app or a Common Service Centre (CSC) near you.',
+  hi: 'वकील से मुफ़्त सलाह के लिए अभी Tele-Law को 14454 पर कॉल करें (कॉल मुफ़्त है)। आप Tele-Law ऐप या पास के कॉमन सर्विस सेंटर (CSC) से भी मदद ले सकते हैं।',
+  te: 'లాయర్‌తో ఉచితంగా మాట్లాడాలంటే ఇప్పుడే Tele-Law నంబర్ 14454కు కాల్ చేయండి (కాల్ ఉచితం). Tele-Law యాప్ లేదా మీ దగ్గరి కామన్ సర్వీస్ సెంటర్ (CSC) కూడా వాడవచ్చు.',
 };
 
 // Problem types the agent can recognise. `keywords` drive the offline (no-LLM) classifier.
@@ -33,6 +48,7 @@ export const PROBLEMS = {
         'Send a short written demand to the employer (the draft below helps). Keep a copy or photo.',
         'If not paid, file a claim at your district Labour Department office (Labour Commissioner / Assistant Labour Commissioner). Filing a claim there is free.',
         'Call 15100 for free legal aid if the employer still refuses. Workers are usually eligible for free legal help.',
+        TELE_LAW_STEP.en,
       ],
       hi: [
         'आपके बकाया का लिखित हिसाब बनाएं: कब काम किया, दिन/महीने की दर, कुल राशि, और नियोक्ता का नाम व पता।',
@@ -40,6 +56,7 @@ export const PROBLEMS = {
         'नियोक्ता को एक संक्षिप्त लिखित मांग भेजें (नीचे ड्राफ्ट मदद करेगा)। एक प्रति रखें।',
         'यदि भुगतान नहीं होता, तो अपने ज़िला श्रम विभाग में दावा दर्ज करें (श्रम आयुक्त/सहायक श्रम आयुक्त)। दावा मुफ्त है।',
         'यदि नियोक्ता इनकार करे, तो 15100 पर कॉल कर मुफ्त कानूनी सहायता पाएं। कामगार अक्सर पात्र होते हैं।',
+        TELE_LAW_STEP.hi,
       ],
       te: [
         'మీకు రావాల్సిన దాని వివరాలు రాసుకోండి: పని చేసిన తేదీలు, రోజు లేదా నెల కూలి రేటు, మొత్తం బకాయి, యజమాని లేదా కాంట్రాక్టర్ పేరు, చిరునామా.',
@@ -47,11 +64,12 @@ export const PROBLEMS = {
         'యజమానికి చిన్న లిఖిత డిమాండ్ లేఖ పంపండి (కింద ఉన్న డ్రాఫ్ట్ సహాయపడుతుంది). దాని కాపీ లేదా ఫోటో ఉంచుకోండి.',
         'అయినా చెల్లించకపోతే, మీ జిల్లా కార్మిక శాఖ కార్యాలయంలో (లేబర్ కమిషనర్ / అసిస్టెంట్ లేబర్ కమిషనర్) క్లెయిమ్ దాఖలు చేయండి. అక్కడ క్లెయిమ్ దాఖలు చేయడం ఉచితం.',
         'యజమాని ఇంకా నిరాకరిస్తే, ఉచిత న్యాయ సహాయం కోసం 15100కు కాల్ చేయండి. కార్మికులు సాధారణంగా ఉచిత న్యాయ సహాయానికి అర్హులు.',
+        TELE_LAW_STEP.te,
       ],
     },
-    helplines: ['legalAid'],
+    helplines: ['legalAid', 'teleLaw'],
     drafts: ['wage_demand', 'legal_aid'],
-    sources: [LINKS.nalsa],
+    sources: [LINKS.nalsa, LINKS.teleLawPib],
   },
   consumer: {
     title: { en: 'Cheated as a consumer (product, service, refund)', hi: 'उपभोक्ता के रूप में धोखा (सामान, सेवा, रिफंड)', te: 'వినియోగదారుగా మోసపోయారు (వస్తువు, సేవ, రిఫండ్)' },
@@ -61,27 +79,30 @@ export const PROBLEMS = {
         'Collect the bill or invoice, order screenshots, warranty card and every message with the seller.',
         'Complain to the seller in writing first and give a date to fix it (for example 15 days).',
         'Register a free grievance with the National Consumer Helpline: call 1915 or use consumerhelpline.gov.in.',
-        'If still unresolved, file a complaint with the District Consumer Commission online on e-Daakhil. You can file it yourself without a lawyer. Claims up to ₹50 lakh go to the District Commission.',
+        'If still unresolved, file a complaint with the District Consumer Commission online on e-Jagriti (e-jagriti.gov.in). You can file it yourself without a lawyer. Claims up to ₹50 lakh go to the District Commission.',
         'File within 2 years of the problem arising.',
+        TELE_LAW_STEP.en,
       ],
       hi: [
         'बिल या रसीद, ऑर्डर स्क्रीनशॉट, वारंटी कार्ड और विक्रेता के साथ हर संदेश इकट्ठा करें।',
         'पहले विक्रेता को लिखित में शिकायत करें और ठीक करने की तारीख दें (उदा. 15 दिन)।',
         'राष्ट्रव्यापी नेशनल कंज्यूमर हेल्पलाइन पर मुफ्त शिकायत दर्ज कराएँ: 1915 पर कॉल या consumerhelpline.gov.in का उपयोग करें।',
-        'यदि फिर भी हल न हो, तो e-Daakhil पर जिले के कंज्यूमर कमीशन में शिकायत दर्ज करें। आप बिना वकील के खुद फाइल कर सकते हैं। ₹50 लाख तक के दावे जिला आयोग में जाते हैं।',
+        'यदि फिर भी हल न हो, तो e-Jagriti (e-jagriti.gov.in) पर जिले के कंज्यूमर कमीशन में शिकायत दर्ज करें। आप बिना वकील के खुद फाइल कर सकते हैं। ₹50 लाख तक के दावे जिला आयोग में जाते हैं।',
         'समस्या के उत्पन्न होने के 2 वर्षों के भीतर फाइल करें।',
+        TELE_LAW_STEP.hi,
       ],
       te: [
         'బిల్లు లేదా ఇన్వాయిస్, ఆర్డర్ స్క్రీన్‌షాట్‌లు, వారంటీ కార్డు, అమ్మినవారితో జరిగిన ప్రతి మెసేజ్ సేకరించండి.',
         'ముందుగా అమ్మినవారికి లిఖితంగా ఫిర్యాదు చేసి, సరిచేయడానికి ఒక గడువు ఇవ్వండి (ఉదాహరణకు 15 రోజులు).',
         'నేషనల్ కన్స్యూమర్ హెల్ప్‌లైన్‌లో ఉచితంగా ఫిర్యాదు నమోదు చేయండి: 1915కు కాల్ చేయండి లేదా consumerhelpline.gov.in వాడండి.',
-        'అయినా పరిష్కారం కాకపోతే, e-Daakhil ద్వారా ఆన్‌లైన్‌లో జిల్లా వినియోగదారుల కమిషన్‌లో ఫిర్యాదు చేయండి. న్యాయవాది లేకుండా మీరే దాఖలు చేయవచ్చు. ₹50 లక్షల వరకు క్లెయిమ్‌లు జిల్లా కమిషన్‌కు వెళ్తాయి.',
+        'అయినా పరిష్కారం కాకపోతే, e-Jagriti (e-jagriti.gov.in) ద్వారా ఆన్‌లైన్‌లో జిల్లా వినియోగదారుల కమిషన్‌లో ఫిర్యాదు చేయండి. న్యాయవాది లేకుండా మీరే దాఖలు చేయవచ్చు. ₹50 లక్షల వరకు క్లెయిమ్‌లు జిల్లా కమిషన్‌కు వెళ్తాయి.',
         'సమస్య తలెత్తిన 2 సంవత్సరాల లోపు ఫిర్యాదు చేయండి.',
+        TELE_LAW_STEP.te,
       ],
     },
-    helplines: ['consumer'],
+    helplines: ['consumer', 'teleLaw'],
     drafts: ['consumer_complaint'],
-    sources: [LINKS.consumerHelpline, LINKS.edaakhil],
+    sources: [LINKS.consumerHelpline, LINKS.eJagriti, LINKS.teleLawPib],
   },
   domestic_violence: {
     title: { en: 'Violence or abuse at home', hi: 'घर में हिंसा या उत्पीड़न', te: 'ఇంట్లో హింస లేదా వేధింపులు' },
@@ -154,6 +175,7 @@ export const PROBLEMS = {
         'The person then has 15 days to pay.',
         'If they do not pay, a complaint can be filed in the Magistrate court within one month after those 15 days end.',
         'Deadlines are strict. Get free legal help from 15100 if you are eligible.',
+        TELE_LAW_STEP.en,
       ],
       hi: [
         'बैंक की वह रसीद रखें जिसमें बताया गया हो कि चेक क्यों न भुगतान हुआ।',
@@ -161,6 +183,7 @@ export const PROBLEMS = {
         'उसके बाद 15 दिन का समय मिलता है।',
         'अगर भुगतान नहीं होता, तो उन 15 दिनों के बाद एक महीने के भीतर मजिस्ट्रेट कोर्ट में शिकायत कर सकते हैं।',
         'समय सीमा सख्त है। अगर आप पात्र हैं तो 15100 से मुफ्त कानूनी मदद लें।',
+        TELE_LAW_STEP.hi,
       ],
       te: [
         'చెక్ ఎందుకు చెల్లించలేదో తెలిపే బ్యాంక్ రిటర్న్ మెమో దాచుకోండి.',
@@ -168,11 +191,12 @@ export const PROBLEMS = {
         'ఆ తర్వాత ఆ వ్యక్తికి చెల్లించడానికి 15 రోజుల గడువు ఉంటుంది.',
         'వారు చెల్లించకపోతే, ఆ 15 రోజులు ముగిసిన తర్వాత ఒక నెల లోపు మేజిస్ట్రేట్ కోర్టులో ఫిర్యాదు దాఖలు చేయవచ్చు.',
         'గడువులు కఠినంగా ఉంటాయి. మీరు అర్హులైతే 15100 ద్వారా ఉచిత న్యాయ సహాయం పొందండి.',
+        TELE_LAW_STEP.te,
       ],
     },
-    helplines: ['legalAid'],
+    helplines: ['legalAid', 'teleLaw'],
     drafts: ['legal_aid'],
-    sources: [LINKS.nalsa],
+    sources: [LINKS.nalsa, LINKS.teleLawPib],
   },
   government_info: {
     title: { en: 'Need information from a government office (RTI)', hi: 'सरकारी दफ़्तर से जानकारी चाहिए (RTI)', te: 'ప్రభుత్వ కార్యాలయం నుండి సమాచారం కావాలి (RTI)' },
@@ -211,6 +235,7 @@ export const PROBLEMS = {
         'The free "eCourts Services" mobile app does the same and can remind you of dates.',
         'If you have no CNR, search by party name with the state, district and court complex.',
         'If you cannot afford a lawyer for your case, call 15100 for free legal aid. Many cases can also be settled faster at a Lok Adalat, where there is no court fee.',
+        TELE_LAW_STEP.en,
       ],
       hi: [
         'Find the 16-character CNR number on any court paper or summons (it looks like MHAU010012342022).',
@@ -218,6 +243,7 @@ export const PROBLEMS = {
         'The free "eCourts Services" mobile app does the same and can remind you of dates.',
         'If you have no CNR, search by party name with the state, district and court complex.',
         'If you cannot afford a lawyer for your case, call 15100 for free legal aid. Many cases can also be settled faster at a Lok Adalat, where there is no court fee.',
+        TELE_LAW_STEP.hi,
       ],
       te: [
         'ఏదైనా కోర్టు కాగితం లేదా సమన్లపై ఉండే 16 అక్షరాల CNR నంబర్ కనుగొనండి (ఇది MHAU010012342022 లా ఉంటుంది).',
@@ -225,11 +251,12 @@ export const PROBLEMS = {
         'ఉచిత "eCourts Services" మొబైల్ యాప్ కూడా ఇదే పని చేస్తుంది, తేదీలను గుర్తు చేస్తుంది.',
         'CNR లేకపోతే, రాష్ట్రం, జిల్లా, కోర్టు కాంప్లెక్స్ ఎంచుకుని కక్షిదారు పేరుతో వెతకండి.',
         'మీ కేసుకు న్యాయవాదిని పెట్టుకునే స్థోమత లేకపోతే, ఉచిత న్యాయ సహాయం కోసం 15100కు కాల్ చేయండి. చాలా కేసులు కోర్టు ఫీజు లేని లోక్ అదాలత్‌లో త్వరగా పరిష్కారమవుతాయి.',
+        TELE_LAW_STEP.te,
       ],
     },
-    helplines: ['legalAid'],
+    helplines: ['legalAid', 'teleLaw'],
     drafts: ['legal_aid'],
-    sources: [LINKS.ecourts],
+    sources: [LINKS.ecourts, LINKS.teleLawPib],
   },
   land_property: {
     title: { en: 'Land, house or tenancy dispute', hi: 'ज़मीन, मकान या किराये का विवाद', te: 'భూమి, ఇల్లు లేదా అద్దె వివాదం' },
@@ -240,23 +267,26 @@ export const PROBLEMS = {
         'Get the latest land record copy from your state land records portal or the tehsil/mandal office.',
         'Many such disputes can be settled at a Lok Adalat or through mediation run by the District Legal Services Authority. There is no court fee and the settlement is final.',
         'Call 15100 to check if you qualify for a free lawyer and to ask about the next Lok Adalat.',
+        TELE_LAW_STEP.en,
       ],
       hi: [
         'कागज़ात इकट्ठा करें: बिक्री पत्र, जमीन के रिकॉर्ड (राइट्स रिकॉर्ड), कर रसीदें, किराये का समझौता, रसीदें और तस्वीरें।',
         'अपने राज्य के जमीन रिकॉर्ड पोर्टल या तहसील/मंडल कार्यालय से नवीनतम रिकॉर्ड की प्रति प्राप्त करें।',
         'ऐसी कई विवादें लोक अदालत में निपटाई जा सकती हैं या जिला विधिक सेवा प्राधिकरण की मध्यस्थता से सुलझ सकती हैं। कोई कोर्ट फीस नहीं और समझौता अंतिम होता है।',
         'जांच करने के लिए 15100 पर कॉल करें कि क्या आप मुफ्त वकील के लिए पात्र हैं और अगले लोक अदालत के बारे में पूछें।',
+        TELE_LAW_STEP.hi,
       ],
       te: [
         'కాగితాలు సేకరించండి: సేల్ డీడ్ (అమ్మకపు దస్తావేజు), భూ రికార్డులు (హక్కుల రికార్డు / పహాణీ), పన్ను రసీదులు, అద్దె ఒప్పందం, రసీదులు, ఫోటోలు.',
         'మీ రాష్ట్ర భూ రికార్డుల పోర్టల్ నుండి లేదా తహసీల్ / మండల కార్యాలయం నుండి తాజా భూ రికార్డు కాపీ తీసుకోండి.',
         'ఇలాంటి చాలా వివాదాలు లోక్ అదాలత్‌లో లేదా జిల్లా న్యాయ సేవల అధికార సంస్థ నిర్వహించే మధ్యవర్తిత్వం ద్వారా పరిష్కారమవుతాయి. కోర్టు ఫీజు ఉండదు, పరిష్కారం అంతిమమైనది.',
         'ఉచిత న్యాయవాదికి మీరు అర్హులో కాదో తెలుసుకోవడానికి, తదుపరి లోక్ అదాలత్ గురించి అడగడానికి 15100కు కాల్ చేయండి.',
+        TELE_LAW_STEP.te,
       ],
     },
-    helplines: ['legalAid'],
+    helplines: ['legalAid', 'teleLaw'],
     drafts: ['legal_aid'],
-    sources: [LINKS.nalsa],
+    sources: [LINKS.nalsa, LINKS.teleLawPib],
   },
 };
 

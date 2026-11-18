@@ -1,7 +1,7 @@
 // Deterministic tools the agent can call. They never invent facts: guidance comes from
 // knowledge.js, eligibility from section 12 of the Legal Services Authorities Act, 1987,
 // and drafts are fill-in templates the citizen reviews before using.
-import { PROBLEMS, HELPLINES, DISCLAIMER } from './knowledge.js';
+import { PROBLEMS, HELPLINES, LINKS, DISCLAIMER } from './knowledge.js';
 
 const LANGS = new Set(['en', 'hi', 'te']);
 const lang = (l) => (LANGS.has(l) ? l : 'en');
@@ -41,9 +41,12 @@ export const AID_CATEGORIES = {
 export function checkLegalAid({ categories = [], annual_income_inr, state } = {}) {
   const valid = (Array.isArray(categories) ? categories : []).filter((c) => AID_CATEGORIES[c]);
   const next = 'Call 15100 (NALSA) or visit the District Legal Services Authority at your district court to apply. Bring an ID and any papers about your case.';
+  // NALSA's online "Legal Aid Application" (LSMS portal), linked from nalsa.gov.in.
+  const apply_online = LINKS.nalsaLegalAidApply;
   if (valid.length) {
     return {
       result: 'eligible',
+      apply_online,
       reason: `Entitled to free legal aid under section 12 of the Legal Services Authorities Act, 1987 as: ${valid.map((c) => AID_CATEGORIES[c]).join('; ')}. Income does not matter for this category.`,
       next,
     };
@@ -55,6 +58,7 @@ export function checkLegalAid({ categories = [], annual_income_inr, state } = {}
     // sourced per-state table).
     return {
       result: 'check_with_dlsa',
+      apply_online,
       reason: `Income-based eligibility depends on the limit notified by ${state ? `the ${state} government` : 'your state government'}. Ask the District Legal Services Authority whether ₹${income.toLocaleString('en-IN')} a year qualifies.`,
       next,
     };

@@ -8,16 +8,19 @@ import { createHash, randomBytes } from 'node:crypto';
 import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { PROBLEMS } from './knowledge.js';
+import { DRAFT_KINDS } from './tools.js';
 
 export const EVENT_KINDS = new Set([
   'page_view', 'agent_turn', 'aid_checked', 'draft_made', 'draft_copied', 'draft_downloaded',
-  'helpline_tapped', 'feedback', 'followup',
+  'helpline_tapped', 'feedback', 'followup', 'whatsapp_shared',
 ]);
-const CLIENT_KINDS = new Set(['page_view', 'draft_copied', 'draft_downloaded', 'helpline_tapped', 'feedback', 'followup']);
+const CLIENT_KINDS = new Set(['page_view', 'draft_copied', 'draft_downloaded', 'helpline_tapped', 'feedback', 'followup', 'whatsapp_shared']);
 const VALUES = {
   feedback: new Set(['helpful', 'not_helpful']),
   followup: new Set(['took_step', 'not_yet', 'resolved']),
-  helpline_tapped: new Set(['15100', '112', '181', '1098', '1915', '1930']),
+  helpline_tapped: new Set(['15100', '112', '181', '1098', '1915', '1930', '14454']),
+  // "Send on WhatsApp": only WHAT was shared (the steps, or which letter), never its text.
+  whatsapp_shared: new Set(['steps', ...Object.keys(DRAFT_KINDS)]),
 };
 const BOT_UA = /bot|crawl|spider|slurp|preview|headless|python-requests|curl|wget|httpclient|axios|go-http|java\/|phantom|lighthouse|monitor|uptime/i;
 
@@ -94,6 +97,7 @@ export function openAnalytics(dbPath = process.env.ANALYTICS_DB || './data/analy
       drafts_made: count('draft_made'),
       drafts_taken: one(`SELECT COUNT(*) n FROM events WHERE ${real} AND kind IN ('draft_copied','draft_downloaded')`).n,
       helpline_taps: count('helpline_tapped'),
+      whatsapp_shares: count('whatsapp_shared'),
       feedback: { helpful: helpful.y || 0, total: helpful.n || 0 },
       followups: Object.fromEntries(all(`SELECT value, COUNT(*) n FROM events WHERE ${real} AND kind='followup' GROUP BY value`).map((r) => [r.value, r.n])),
       by_problem: Object.fromEntries(all(`SELECT problem_type, COUNT(DISTINCT sid) n FROM events WHERE ${real} AND kind='agent_turn' AND problem_type IS NOT NULL GROUP BY problem_type ORDER BY n DESC`).map((r) => [r.problem_type, r.n])),

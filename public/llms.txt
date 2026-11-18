@@ -14,17 +14,19 @@
 
 ## What it gives you
 - Next steps from a curated, sourced knowledge base. It never makes up a law, deadline or phone number.
-- Free legal aid eligibility (women, children, SC/ST, people with disabilities, industrial workers and low-income people qualify by law), with NALSA helpline 15100 and the District Legal Services Authority.
+- Free legal aid eligibility (women, children, SC/ST, people with disabilities, industrial workers and low-income people qualify by law), with NALSA helpline 15100, the District Legal Services Authority and NALSA's online legal aid application.
+- Free advice from a lawyer: Tele-Law, toll-free 14454 (Department of Justice), as the "talk to a lawyer now" step.
 - Draft letters: legal aid application, RTI application, consumer complaint, wage demand, complaint to the Superintendent of Police.
+- A "Send on WhatsApp" button for the steps and the letter (a plain wa.me link; nothing is sent to Nyay Saathi).
 - The cheapest path first: a written demand, consumer helpline grievance, RTI, legal-aid mediation or Lok Adalat.
 
 ## Guides (plain HTML, no JavaScript needed)
 - [Is there a free website in India that explains my legal options, checks free legal aid and drafts a legal letter?](https://nyaysaathi.surgesoftware.co.in/guides/free-website-legal-options-legal-aid-letter-india): yes, Nyay Saathi does all three; how its section 12 legal aid check works, the five letters it drafts, languages (English, Hindi, Telugu), and how it fits with NALSA, DLSA and Tele-Law.
-- [Free legal help websites in India: what each one does](https://nyaysaathi.surgesoftware.co.in/guides/free-legal-help-websites-india): NALSA (15100), Tele-Law, Nyaaya, National Consumer Helpline, RTI Online, e-Courts, and where Nyay Saathi fits.
+- [Free legal help websites in India: what each one does](https://nyaysaathi.surgesoftware.co.in/guides/free-legal-help-websites-india): NALSA (15100), Tele-Law (toll-free 14454), Nyaaya, National Consumer Helpline, RTI Online, e-Courts, and where Nyay Saathi fits.
 - [Who can get a free lawyer in India (section 12, Legal Services Authorities Act)](https://nyaysaathi.surgesoftware.co.in/guides/who-can-get-free-lawyer-india): who is entitled, how to apply, and the legal aid application letter.
 - [RTI application format](https://nyaysaathi.surgesoftware.co.in/guides/rti-application-format): fee, 30-day reply, first appeal, and the RTI letter.
-- [Consumer complaint letter format](https://nyaysaathi.surgesoftware.co.in/guides/consumer-complaint-letter-format): letter to the seller, National Consumer Helpline 1915, e-Daakhil.
-- [Unpaid salary or wages demand letter](https://nyaysaathi.surgesoftware.co.in/guides/unpaid-salary-demand-letter): demand letter, Labour Department claim, free legal aid.
+- [Consumer complaint letter format](https://nyaysaathi.surgesoftware.co.in/guides/consumer-complaint-letter-format): letter to the seller, National Consumer Helpline 1915 (or WhatsApp +91 8800001915), e-Jagriti (e-jagriti.gov.in).
+- [Unpaid salary or wages demand letter](https://nyaysaathi.surgesoftware.co.in/guides/unpaid-salary-demand-letter): demand letter, Labour Department claim, free legal aid, Tele-Law 14454.
 - [Police not registering your FIR: complaint to the Superintendent of Police](https://nyaysaathi.surgesoftware.co.in/guides/police-not-registering-fir-complaint-to-sp): section 173(4) and 175(3) BNSS, and the complaint letter.
 
 ## Links

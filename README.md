@@ -7,9 +7,9 @@
 Nyay Saathi ("justice companion") helps an ordinary person with a legal problem find their next step. They describe what happened in their own words, in English, Hindi or Telugu. The agent then:
 
 1. **Works out what kind of problem it is** (unpaid wages, consumer fraud, violence at home, police not filing an FIR, cheque bounce, a stuck government application, court case status, land or tenancy).
-2. **Gives verified next steps, helplines and official links** from a curated, sourced knowledge base. It never makes up a law, deadline or phone number.
-3. **Checks whether they can get a free lawyer** under section 12 of the Legal Services Authorities Act, 1987, and points them to 15100 (NALSA) and their District Legal Services Authority.
-4. **Drafts the letter they need** (legal aid application, RTI application, consumer complaint, wage demand, complaint to the Superintendent of Police), which they fill in, copy or download.
+2. **Gives verified next steps, helplines and official links** from a curated, sourced knowledge base. It never makes up a law, deadline or phone number. Where free advice fits, the "talk to a lawyer free now" step is Tele-Law's toll-free 14454.
+3. **Checks whether they can get a free lawyer** under section 12 of the Legal Services Authorities Act, 1987, and points them to 15100 (NALSA), their District Legal Services Authority, or NALSA's online legal aid application.
+4. **Drafts the letter they need** (legal aid application, RTI application, consumer complaint, wage demand, complaint to the Superintendent of Police), which they fill in, copy, download or send on WhatsApp (a plain `wa.me` link: no API, and nothing is sent to our server).
 
 No sign-up, no tracking cookies, and nothing the person types is saved.
 
@@ -82,7 +82,7 @@ Mark your own devices as internal testers by opening `/?internal=1` once on each
 ## Limits, stated plainly
 
 - This is legal **information**, not legal advice. Every screen says so and points to a free lawyer.
-- Step-by-step guidance is written in English; the interface, the offline replies and LLM replies are in Hindi when the person uses Hindi. Hindi and Telugu translations of the guidance are the next contribution we want.
+- Step-by-step guidance, the interface, the offline replies and LLM replies are in English, Hindi and Telugu. The draft letters are in English only.
 - The income limit for free legal aid is set by each state and changes, so the app does not guess it. It sends people to their DLSA to confirm.
 - Eight common problem types are covered. Each new one needs official sources (see [CONTRIBUTING.md](CONTRIBUTING.md)).
 

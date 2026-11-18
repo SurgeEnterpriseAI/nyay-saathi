@@ -4,7 +4,7 @@ The rules ask for "actual deployment data, not intentions". These are the exact 
 
 ## What is stored
 
-One row per event in a local SQLite file, with these columns: time, day, event kind, problem type (one of 8 fixed values), language (`en` or `hi`), planner mode (`llm`, `offline` or `offline_fallback`), a short fixed value (for example `helpful` or `15100`), a bot flag and an internal flag.
+One row per event in a local SQLite file, with these columns: time, day, event kind, problem type (one of 8 fixed values), language (`en`, `hi` or `te`), planner mode (`llm`, `offline` or `offline_fallback`), a short fixed value (for example `helpful` or `15100`), a bot flag and an internal flag.
 
 Each browser gets a random id kept in its own `localStorage`. The server stores only a salted SHA-256 hash of it, cut to 16 hex characters, so that unique devices can be counted.
 
@@ -19,7 +19,8 @@ Each browser gets a random id kept in its own `localStorage`. The server stores 
 | Letters drafted | `draft_made` events: a draft was produced by the agent or by the person filling the form. |
 | Letters taken | `draft_copied` + `draft_downloaded`. |
 | Legal-aid checks | `aid_checked` events, with the result (`eligible`, `check_with_dlsa`, `need_more_info`). |
-| Helpline taps | Taps on a `tel:` link (15100, 112, 181, 1098, 1915, 1930). A tap starts a call; we cannot see whether it connected. |
+| Helpline taps | Taps on a `tel:` link (15100, 112, 181, 1098, 1915, 1930, 14454). A tap starts a call; we cannot see whether it connected. 14454 is Tele-Law, the "talk to a lawyer free now" step. |
+| WhatsApp shares | Taps on "Send on WhatsApp", with only what was shared (`steps` or the letter type, such as `rti`). The text itself goes from the person's phone to WhatsApp and never to our server. We cannot see whether it was sent. |
 | Found it helpful | Share of "Yes" answers to "Was this helpful?". |
 | Follow-ups | Returning visitors asked 3+ days after getting help whether they took the step. Self-reported. |
 

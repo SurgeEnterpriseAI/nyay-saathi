@@ -36,6 +36,7 @@ fetch('/api/impact').then((r) => r.json()).then((s) => {
     ['Said their problem was solved', s.followups.resolved],
     ['Not yet', s.followups.not_yet],
     ['Letters copied or downloaded', s.drafts_taken],
+    ['Sent on WhatsApp (steps or letter)', s.whatsapp_shares],
   ]));
   $('#meta').textContent = `Counting since ${s.first_event_day || '—'}. Updated ${new Date(s.generated_at).toLocaleString('en-IN')}. Excluded: ${fmt(s.excluded.bot_events)} automated events, ${fmt(s.excluded.internal_events)} internal test events. Follow-up answers are self-reported.`;
 }).catch(() => { $('#tiles').textContent = 'Could not load numbers.'; });
